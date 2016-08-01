@@ -645,6 +645,9 @@ setVarFromIni = function(){
 	 lowestPriceJS = secSys.lowestPriceJS 
 	 xLog(499+"	###	lowestPriceJS æØ æº€…Ë÷√£∫"+lowestPriceJS) 
 	 
+	 //weburl paimai.alltobid.com
+	 weburl = secSys.weburl
+	 
 	 //..io.print(user)
 }
 
@@ -2989,6 +2992,8 @@ openLoginPage = function(){
     key.combine("CTRL","a")
     //key.send(string.sub()
     win.delay(500)	
+    
+    // set weburl param 
     key.send("paimai.alltobid.com",50)
     win.delay(500)	
 	
