@@ -67,6 +67,7 @@ button10={cls="button";text="二次出价ctrl4";left=699;top=613;right=824;bottom=64
 button11={cls="button";text="进入系统ctrl1";left=701;top=493;right=826;bottom=527;z=93};
 button12={cls="button";text="模拟出价ctrl6";left=698;top=405;right=823;bottom=439;z=94};
 button13={cls="button";text="BP";left=378;top=358;right=407;bottom=392;z=98};
+button14={cls="button";text="公司首次出价ctrl7+20000";left=501;top=495;right=654;bottom=529;z=99};
 button2={cls="button";text="重新加载配置";left=544;top=442;right=624;bottom=476;z=59};
 button3={cls="button";text="启动行情服务";left=447;top=366;right=565;bottom=400;z=74};
 button4={cls="button";text="发送重启定时器及配置命令";left=576;top=365;right=729;bottom=399;z=75};
@@ -2776,11 +2777,11 @@ pressF7 = function(varYzmType = "jpp"){
 setEdtValue = function( x, y , value){
 	import mouse
 	mouse.clickDb(x,y,true)	
-	win.delay(500)
+	win.delay(200)
     import key
     //key.send(string.sub()
-    key.send(value,100)
-    win.delay(500)		
+    key.send(value,50)
+    win.delay(200)		
 }
 
 clkBtnValue = function(x, y){
@@ -2859,6 +2860,21 @@ setBidOncePrice = function(){
 }
 
 
+setBidOncePriceGs = function(){
+	
+	var hqLastPriceStr = cliGetLastPrice()
+	xLog("获取最新行情"+hqLastPriceStr)	
+	var hqLastPriceNum = tonumber(hqLastPriceStr)
+	
+	hqLastPriceNum = hqLastPriceNum + 20000
+	
+	hqLastPriceStr = tostring(hqLastPriceNum)
+	
+	xLog("设置首次出价价格，警示价："+hqLastPriceStr+"并点击出价")
+	setEdtValue(xBidOnce1Edt, yBidOnce1Edt, hqLastPriceStr)	
+	setEdtValue(xBidOnce2Edt, yBidOnce2Edt, hqLastPriceStr)	
+	clkBtnValue(xBidOnceBtn, yBidOnceBtn)		
+}
 setbidOnceYzm = function(){	
 	//return tmpcode4, gcode; 	
 }
@@ -2889,6 +2905,33 @@ bidOnce = function(){
 	
 	// 点击确认按钮
 	clkErrWndBtn300()
+	xLog("完成首次出价@")
+	
+}
+bidOnceGs = function(){
+	xLog("@开始首次出价")
+	xLog("设置首次出价价格，警示价")
+	setBidOncePriceGs()
+	
+	// 等待验证码
+	win.delay(500)
+	//redo
+	//pressF7(yzmType)
+	
+	_Beep(3000, 100)
+	
+	//###test 
+	//setbidOnceYzm()
+	
+	// 等待
+	//win.delay(3000)
+	//pressF3()	
+	
+	
+	//win.delay(3000)
+	
+	// 点击确认按钮
+	//clkErrWndBtn300()
 	xLog("完成首次出价@")
 	
 }
@@ -3021,6 +3064,22 @@ bidOnceAll = function(){
 	startCamPauseRecord()			
 }
 
+	// 首次出价公司  14:29:40 +20000
+bidOnceAllGs = function(){
+	//startCamPauseRecord()
+	//win.delay(1000)
+	bidOnceGs()
+	//win.delay(1000)
+	//startCamPauseRecord()			
+}
+
+
+
+mainForm.button14.oncommand = function(id,event){
+	//mainForm.msgbox( mainForm.button14.text );
+	bidOnceAllGs()	
+	
+}
 	
 	
 // 二次出价  11:02
@@ -3851,6 +3910,12 @@ hotkey.reg(
 
 
 
+hotkey.reg(
+    "CTRL","7", 
+    function(hwnd,...){
+		bidOnceAllGs()
+    } 
+)
 
 // alt + k  开始暂停录像
 startCamPauseRecordNew = function(){
@@ -4230,6 +4295,10 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 	elseif(allBidFlag!=null) and (allBidFlag == "ccmdallsnapscreen"){ //截取全屏
 		subThreadTable.allbid = "0"
 		ccmdallsnapscreen()
+	}
+	elseif(allBidFlag!=null) and (allBidFlag == "ccmdallstartcam"){ //全部开始录像
+		subThreadTable.allbid = "0"
+            	startCamPauseRecordNew()
 	}
 	elseif(allBidFlag!=null) and (allBidFlag == "ccmdallopenpage"){ //地址栏输入网址，并点击进入
 		subThreadTable.allbid = "0"
