@@ -1589,11 +1589,42 @@ clkErrWndBtn300 = function(){
 	mouse.click( xErrorBtn, yErrorBtn,true); 
 }
 
+
+getBidPriceDirectly = function(){
+		
+}
+
+
+setBidPriceDirectly = function(inPrice){
+
+	import mouse
+	mouse.clickDb(xPriceEdt,yPriceEdt,true)	
+	win.delay(10)
+	key.press(0x8/*_VK_BACK*/)
+	win.delay(10)
+    import key
+    //key.send(string.sub()
+    //key.send(f1Price,2)
+
+    import win.clip
+    key.combine("CTRL","a")
+    win.delay(20) 
+	win.clip.write(inPrice)
+    win.delay(20)
+    key.combine("CTRL","v")
+    
+    win.delay(10)	
+    curBidPriceStr = inPrice	
+}
+
+
+
 //默认出价
 strPrice = 80000
 
 curBidPriceStr = "10000"
 curBidPriceNum = 10000
+
 
 
 getCurBidPrice = function(){
@@ -2780,11 +2811,11 @@ pressF7 = function(varYzmType = "jpp"){
 setEdtValue = function( x, y , value){
 	import mouse
 	mouse.clickDb(x,y,true)	
-	win.delay(200)
+	win.delay(50)
     import key
     //key.send(string.sub()
-    key.send(value,50)
-    win.delay(200)		
+    key.send(value,20)
+    win.delay(50)		
 }
 
 clkBtnValue = function(x, y){
@@ -3456,8 +3487,8 @@ getBidPriceNice = function(varBidPrice){
 	{
     	..io.print("连接成功")
 	}
-	
-	var msg = zeromq.message(varBidPrice)  
+	var sendBidPriceMsg = "getPrice-"+varBidPrice  // 
+	var msg = zeromq.message(sendBidPriceMsg)  
 	requester.sendMsg(msg)
 	msg.close();
 	
