@@ -616,9 +616,19 @@ setVarFromIni = function(){
 	 clientCfgByIp = ini.read("clientCfgByIp",clientIp,"null")
 	 
 	 //..io.print(588, "clientCfgByIp", clientCfgByIp, clientIp)
-	 user, pwd, idNo, priceAdded, priceBefore, timeLine, ip, imgSvrIp, bid1Time, bid2Time, bid3Time, yzmType = cfgTable.splitIpCfgStr(clientCfgByIp)
+	 user, pwd, idNo, priceAdded, priceBefore, timeLine, ip, imgSvrIp, bid1Time, bid2Time, bid3Time, yzmType, bid4Time = cfgTable.splitIpCfgStr(clientCfgByIp)
 	 
-	 ..io.print(588, "bid1Time", bid1Time)
+	 ..io.print("")
+	 ..io.print("****************************************")
+	 ..io.print(588, "根据clientIp地址，读取配置文件相应配置：", clientIp)
+	 ..io.print(588, "电信or联通dx/lt                       ：", bid1Time)
+	 ..io.print(588, "最后出价提交时间                      ：", timeLine ）
+	 ..io.print(588, "提前100出价时间                       ：", bid2Time)
+	 ..io.print(588, "提前200出价时间                       ：", bid4Time)
+	  ..io.print(588,"网络获取行情                          ：", bid3Time)
+	  ..io.print(588,"自定义加价                            ：", priceAdded)
+	 ..io.print("****************************************")
+	 ..io.print("")
 	 
 	 subThreadTable.ip = ip
 	 subThreadTable.imgSvrIp = imgSvrIp
@@ -637,7 +647,7 @@ setVarFromIni = function(){
 	 xLog(499+"	###	priceSvrIP 行情服务器IP："+subThreadTable.ip) 
 	 xLog(499+"	###	imgSvrIp 验证码代理服务器IP："+subThreadTable.imgSvrIp) 
 	 xLog(499+"	###	yzmType 验证码识别类型："+subThreadTable.yzmType) 
-	 xLog(499+"	###	bid3Time 最后出价时间点："+bid3Time) 
+	 xLog(499+"	###	bid3Time 最后出价时间点："+timeLine) 
 	 f1Price = priceAdded
 	 bidTimeStr = timeLine
 	 
@@ -1104,7 +1114,7 @@ cliReceiveThread = function(){
 		var tab = thread.table("subPrice")
 		// useNetPrice = bid3Time
 		..io.print(1094,"useNetPrice", tab.useNetPrice)
-		if (tab.useNetPrice == "useNetPrice"){
+		if (tab.useNetPrice == "y"){
 			try{
 					
 					import zeromq
@@ -1132,11 +1142,12 @@ cliReceiveThread = function(){
 						if(ret){
         						var str = ..raw.tostring( msg.getData(),1,msg.getSize())
         						msg.close();
-        						..io.print("cli-thread", str)	
+        						//..io.print("cli-thread", str)	
         						tab.lastPrice =  str;
         						
         						if (i % 5 = 0){
-        							xLog("cli-thread"+str)       						
+        							..io.print("..[net].. get new hqPrice running ...... cli_thread_getlastPrice-"+str)
+        							xLog("..[net].. get new hqPrice running ...... cli_thread_getlastPrice-"+str)       						
         							xLogFlush()
         						}
 						}
@@ -1173,9 +1184,10 @@ cliReceiveThread = function(){
 					if (string.len(tmpPrice) >= 5) and (string.sub(tmpPrice,4,5) == "00")
         				tab.lastPrice = "p-"+tmpPrice
         		}
-        		..io.print("cli_thread_local_lastPrice-"+tab.lastPrice)
+        		
         		if (i % 5 = 0){
-        			xLog("cli_thread_local_lastPrice-"+tab.lastPrice)
+        			..io.print("..[local].. get new hqPrice running ...... cli_thread_getlastPrice-"+tab.lastPrice)
+        			xLog("....[local]..get new hqPrice running ...... cli_thread_getlastPrice-"+tab.lastPrice)
         			xLogFlush()
         		}
 			
@@ -1879,6 +1891,8 @@ function getImgSbm(varRange = ""){
 	
 	picLastPrice.Save("d:\jppweb\imgSbm.jpg");		
 	
+	
+	/*
 	//获取图像像素数据
 	pixLastPrice = liblept.pixRead("d:\jppweb\imgSbm.jpg");	
 	ocr.setImage2( pixLastPrice );	
@@ -1898,7 +1912,10 @@ function getImgSbm(varRange = ""){
 	result = string.trim(result)
 	result = string.replace(result," ","")
 	xLog("完成获取识别码："+result)
+	
 	return  result; 
+	*/
+	return "";
 }
 
 
@@ -2591,7 +2608,7 @@ pressF7 = function(varYzmType = "jpp"){
 	// 截屏
 	xLog("截取验证码图片，并保存到文件：D:\jppweb\imgcode6.jpg")
 	getCode6ToImgFile()
-	snapImg.bakImgFile("imgcode6.jpg")
+	//snapImg.bakImgFile("imgcode6.jpg")
 	
 	mainForm.picturebox2.redraw()
 	mainForm.picturebox2.image = "D:\jppweb\imgcode6.jpg"
@@ -2601,11 +2618,12 @@ pressF7 = function(varYzmType = "jpp"){
 	//gcode = "123456"
 	//
 	xLog("开始获取识别码sbm")
-	var tmpsbm = getImgSbm()
-	var codeQzh = getCodeQzh(tmpsbm)
+	//var tmpsbm = getImgSbm()
+	//var codeQzh = getCodeQzh(tmpsbm)
 	//var tmpcode4 = getCode4(gcode,tmpsbm)
-	xLog("获取识别码完成sbm = "+tmpsbm )
-	
+	//xLog("获取识别码完成sbm = "+tmpsbm )
+
+	/*
 	if (codeQzh == "n")
 	{
 		xLog("重新截取验证码图片，并保存到文件：D:\jppweb\imgcode6.jpg")
@@ -2616,22 +2634,22 @@ pressF7 = function(varYzmType = "jpp"){
 		mainForm.picturebox2.image = "D:\jppweb\imgcode6.jpg"
 		mainForm.picturebox2.redraw()		
 	}
-	
+	*/	
 	
 	var code4Result = ""
 	
 	xLog("合并处理发送验证码图片")
-	if (codeQzh != "n"){
-		snapImg.snapImgRectFromImgFile("D:\jppweb\imgcode6.jpg", "D:\jppweb\imgcode4.jpg", codeQzh)
-	}	
+	//if (codeQzh != "n"){
+	//	snapImg.snapImgRectFromImgFile("D:\jppweb\imgcode6.jpg", "D:\jppweb\imgcode4.jpg", codeQzh)
+	//}	
 	// "合并图片和说明"
-	else {//if (codeQzh == "n"){
+	//else {//if (codeQzh == "n"){
 		getImgSbm("n")
 		snapImg.conbineImgRectFromImgFile("d:\jppweb\imgcode6.jpg",	"d:\jppweb\imgsbm.jpg", "D:\jppweb\imgcode4.jpg")	
-	}
-	snapImg.bakImgFile("imgcode6.jpg")
-	snapImg.bakImgFile("imgsbm.jpg")
-	snapImg.bakImgFile("imgcode4.jpg")
+	//}
+	//snapImg.bakImgFile("imgcode6.jpg")
+	//snapImg.bakImgFile("imgsbm.jpg")
+	//snapImg.bakImgFile("imgcode4.jpg")
 	
 	
 	
@@ -2685,8 +2703,8 @@ pressF7 = function(varYzmType = "jpp"){
 				ImgRectimeOut = ImgRectimeOut + 200
 			}	
 			
-			// 2分钟没有识别返回验证码，则超时，返回 y 重新发起验证码识别
-			if (ImgRectimeOut > 1000*60*5){
+			// 10分钟没有识别返回验证码，则超时，返回 y 重新发起验证码识别
+			if (ImgRectimeOut > 1000*60*10){
 				tmpCode4 = "rerecImg"
 				xLog("	!!!	jpp验证码识别超时，重新发起识别, tmpCode4:"+tmpCode4)
 				//thread.create(threadRecImgReqOnce)
@@ -3211,7 +3229,7 @@ bidFinalAll = function(varTime = "1"){
 		hqLastPriceNum = tonumber(hqLastPriceStr)
 
 		//if(nowTimeStr<"00:00:10"){ // 未到最后出价时间
-		if(nowTimeStr<endTimeStr){ // 未到最后出价时间
+		if(nowTimeStr<timeLine){ // 未到最后出价时间
 			xLog("未到最后出价时间，行情："+lPriceStr+"，出价："+curBidPriceStr)
 			win.delay(25)
 			
@@ -3321,7 +3339,7 @@ bidConfirmNice = function(){
 		var bidSubHqPriceNum = curBidPriceNum - hqLastPriceNum; 
 
 		//if(nowTimeStr<"00:00:10"){ // 未到最后出价时间
-		if(nowTimeStr<endTimeStr){ // 未到最后出价时间
+		if(nowTimeStr<timeLine){ // 未到最后出价时间
 			xLog("未到最后出价时间，行情："+hqLastPriceStr+"，出价："+curBidPriceStr)
 			win.delay(25)
 			
@@ -3340,17 +3358,17 @@ bidConfirmNice = function(){
 				//}
 			//}
 			
-			if(nowTimeStr >= "112954"){
+			if(nowTimeStr >= bid2Time){
 				if (hqLastPriceNum >= curBidPriceNumSub100) {
-					xLog("当前时间大于 112954 提前100出价："+bidSubHqPriceNum+"!!当前行情"+curBidPriceNumSub100+"!!!!立即出价，进入bidNice2下次出价")
+					xLog("当前时间大于 112954 提前100出价："+curBidPriceNumSub100+"!!当前行情"+bidSubHqPriceNum+"!!!!立即出价，进入bidNice2下次出价")
 					pressF3()  // clk cancel btn
 					break;	
 				}
 			}
 			
-			if(nowTimeStr >= "112955"){
+			if(nowTimeStr >= bid3Time){
 				if (hqLastPriceNum >= curBidPriceNumSub200) {
-					xLog("当前时间大于 112955 提前200出价："+hqLastPriceNum+"!!当前行情"+curBidPriceNumSub100+"!!!!立即出价，进入bidNice2下次出价")
+					xLog("当前时间大于 112955 提前200出价："+curBidPriceNumSub200+"!!当前行情"+bidSubHqPriceNum+"!!!!立即出价，进入bidNice2下次出价")
 					pressF3()  // clk cancel btn
 					break;	
 				}
@@ -3365,6 +3383,7 @@ bidConfirmNice = function(){
 					break;	
 				}
 			}
+			
 		}
 		else {  // 到了最后出价时间，不管任何情况，选择出价 // 53秒后，不管任何情况都应该出价了
 			xLog("###	!!!到达最后出价时间:"+endTimeStr+" 强制出价,，行情："+hqLastPriceNum+"，出价："+curBidPriceStr)
@@ -3621,7 +3640,8 @@ bidNice = function(){
 	// 等待验证码， 如果 识别码 不对，应超时跳出，或重取验证码
 	xLog("循环等待获取识别码，2秒超时")
 	var sbmTimeOut = 0
-	while(true){
+	//while(true){
+		/*
 		var vtype = getImgSbm()
 		
 		xLog("3183-bidNice-vtype:"+vtype)
@@ -3635,20 +3655,20 @@ bidNice = function(){
 		else if (vtype != "") and (string.indexOf(hCode, vtype)!=null){
 			break;
 		}
-		
+		*/
 		import mouse
 		mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
-		win.delay(100)
+		win.delay(50)
 		mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
 		
 		sbmTimeOut = sbmTimeOut + 300
 		win.delay(200)
 		
-		if (sbmTimeOut > 600){  // 2秒后超时
-			xLog("###	！！！验证码识别码超时，["+getNowTime()+"] sbmTimeOut："+tostring(sbmTimeOut))
-			break;
-		}
-	}				
+	//	if (sbmTimeOut > 400){  // 2秒后超时
+	//		xLog("###	！！！验证码识别码超时，["+getNowTime()+"] sbmTimeOut："+tostring(sbmTimeOut))
+	//		break;
+	//	}
+	//}				
 		
 	xLog("开始发起验证码识别")	
 	// 识别验证码并输入
@@ -4344,7 +4364,9 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 		subThreadTable.allbid = "0"
 	}
 	
-	..io.print(  2438 , allBidFlag, clientIp, "strIndexOF",string.indexOf(allBidFlag, "0"))
+	//..io.print(  2438 , allBidFlag, clientIp, "strIndexOF",string.indexOf(allBidFlag, "0"))
+	
+	..io.print( "win.timer wait cCmd allBidFlag Call xxx:" , allBidFlag, clientIp)
 	
 	if (allBidFlag!=null) and (string.indexOf(allBidFlag, clientIp)!=null){
 		..io.print("2543", allBidFlag, "bid in")
