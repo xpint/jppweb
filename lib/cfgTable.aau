@@ -18,12 +18,12 @@ namespace cfgTable{
 	splitIpCfgStr = function(cfgStr){
 		import string
 		import table
-		var user, pwd, idNo, priceAdded, priceBefore, timeLine, priceSvrIp, imgSvrIp, bid1Time,bid2Time, bid3Time, yzmType = ""
+		var user, pwd, idNo, priceAdded, priceBefore, timeLine, priceSvrIp, imgSvrIp, bid1Time,bid2Time, bid3Time, yzmType, bid4Time = ""
 		
 		var array = string.split(cfgStr, ";")
 		
 		
-		user, pwd, idNo, priceAdded, priceBefore, timeLine, priceSvrIp, imgSvrIp,bid1Time,bid2Time, bid3Time, yzmType  = table.unpack(array)
+		user, pwd, idNo, priceAdded, priceBefore, timeLine, priceSvrIp, imgSvrIp,bid1Time,bid2Time, bid3Time, yzmType, bid4Time  = table.unpack(array)
 		//..io.print(28,user, pwd, idNo, priceAdded, priceBefore, timeLine, priceSvrIp, imgSvrIp,bid1Time,bid2Time, bid3Time)
 		splitItem = function(item){	
 			var result = string.split(item,"=")[2]
@@ -48,12 +48,14 @@ namespace cfgTable{
 			bid3Time = splitItem(bid3Time)
 			
 			yzmType = splitItem(yzmType)
+			
+			bid4Time = splitItem(bid4Time)
 		}
 		catch(e){
 			..io.print("splitIpCfgStr error",e)	
 		}
 
-		return user, pwd, idNo, priceAdded, priceBefore, timeLine, priceSvrIp, imgSvrIp, bid1Time,bid2Time,bid3Time, yzmType; 			
+		return user, pwd, idNo, priceAdded, priceBefore, timeLine, priceSvrIp, imgSvrIp, bid1Time,bid2Time,bid3Time, yzmType, bid4Time; 			
 		//{user="user";pwd="pwd";idNo="idNo";pricdAdded="pricdAdded";priceBefore="priceBefore";timeLine="timeLine";ip="ip"};	
 	}
 		
