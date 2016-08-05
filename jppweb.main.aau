@@ -1202,7 +1202,8 @@ cliReceiveThread = function(){
 cliGetLastPrice = function(){
 	import thread.table
 	var tab = thread.table("subPrice")
-	var tmpPriceStr = tab.lastPrice
+	var tmpPriceStr = "10000"  // init  tmpPriceStr  
+	tmpPriceStr = tab.lastPrice
 	try{
 		var strArr = string.split(tmpPriceStr, "-")
 		tmpPriceStr = strArr[2]			
