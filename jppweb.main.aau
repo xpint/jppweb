@@ -1170,7 +1170,9 @@ cliReceiveThread = function(){
 			
 
 			var tab = thread.table("subPrice")
-
+			
+			tab.lastPrice = "1111"  // init lastPrice = 1111
+			
 			var i = 0
 			while(true){
 				var tmpPrice =  getLastPriceByImg();
