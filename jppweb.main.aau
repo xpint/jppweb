@@ -3354,7 +3354,8 @@ bidConfirmNice = function(){
 			if (hqLastPriceNum >= curBidPriceNum) { // 如果，目前最高价，大于出价，立即发出
 				xLog("###	!!!立即出价!!!   行情 到达(大于等于) 出价，行情："+hqLastPriceStr+";     出价："+curBidPriceStr)	
 				pressF3()
-				break;	
+				break;
+			}	
 	
 			//elseif (hqLastPriceNum >= curBidPriceNumSub100){ // 如果最高价 距离 出价 还有 1个档位，立即出价
 				//if 	(nowTimeStr>="112950")	{ // 50秒后，价格还差100，就可以选择出价了
