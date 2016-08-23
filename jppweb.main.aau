@@ -3373,9 +3373,9 @@ bidConfirmNice = function(){
 				}
 			}
 			
-			if(nowTimeStr >= bid3Time){ // 112954
+			if(nowTimeStr >= bid4Time){ // 112954
 				if (hqLastPriceNum >= curBidPriceNumSub200) {
-					xLog("###	!!!提前200出价!!!   当前时间大于等于"+bid3Time+ "且行情比出价高200, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
+					xLog("###	!!!提前200出价!!!   当前时间大于等于"+bid4Time+ "且行情比出价高200, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
 					pressF3()  // clk cancel btn
 					break;	
 				}
@@ -4297,8 +4297,7 @@ hk.proc=function(msg,vkcode,scancode){
 import win.timer
 var timer = win.timer( mainForm );
 timer.setInterval(1000)
-timer.enable()
-
+timer.disable()
 
 var timerImgClientHeartBeat = win.timer( mainForm );
 timerImgClientHeartBeat.setInterval(1000)
@@ -4466,14 +4465,14 @@ timer.onTimer = function(hwnd,msg,id,tick){
 	// 自动登陆 9:30
 	if (nowTimeStr == login1TimeStr)
 	{		
-		loginOnceAll()	
+	//	loginOnceAll()	
 
 	}
 	
 	// 首次出价  10:32
 	if (nowTimeStr == bid1TimeStr)
 	{	
-		bidOnceAll()		
+	//	bidOnceAll()		
 
 	}
 	
@@ -4481,23 +4480,23 @@ timer.onTimer = function(hwnd,msg,id,tick){
 	// 二次出价  11:02
 	if (nowTimeStr == bid2TimeStr)
 	{	
-		bidTwiceAll()		
+	//	bidTwiceAll()		
 	}
 	
 	
 	// 最后一分钟开始录像
 	if (nowTimeStr == "112900")
 	{
-		startCamPauseRecord()
+	//	startCamPauseRecord()
 	}
 	
 	
     //  停止录像
 	if (nowTimeStr == "115000")
 	{
-		startCamPauseRecord()
-		win.delay(10000)
-		stopCamRecord()
+	//	startCamPauseRecord()
+	//	win.delay(10000)
+	//	stopCamRecord()
 	}
 	
 	
@@ -4519,7 +4518,7 @@ timer.onTimer = function(hwnd,msg,id,tick){
 	// 最终出价  112900
 	if ( (nowTimeStr == bid3Time) ){	
 		//timer.disable()
-		bidFinalAll()	
+	//	bidFinalAll()	
 	}
 	
 	// 最终出价
