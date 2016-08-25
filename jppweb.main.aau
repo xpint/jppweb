@@ -3455,40 +3455,40 @@ getAddPriceNice = function(){
 			return "1100"
 		}	
 		elseif(nowTimeStr == "41"){
-			return "1000"
+			return "1100"
 		}
 		elseif(nowTimeStr == "42"){
-			return "1000"
+			return "1100"
 		}
 		elseif(nowTimeStr == "43"){
 			return "1000"
 		}	
 		elseif(nowTimeStr == "44"){
-			return "900"
+			return "1000"
 		}
 		elseif(nowTimeStr == "45"){
-			return "800"
+			return "1000"
 		}
 		elseif(nowTimeStr == "46"){
-			return "800"
+			return "900"
 		}	
 		elseif(nowTimeStr == "47"){
-			return "800"
+			return "900"
 		}	
 		elseif(nowTimeStr == "48"){
-			return "700"
+			return "800"
 		}
 		elseif(nowTimeStr == "49"){
-			return "600"
+			return "800"
 		}
 		elseif(nowTimeStr == "50"){
-			return "500"
+			return "600"
 		}
 		elseif(nowTimeStr == "51"){
-			return "500"
+			return "600"
 		}
 		else {
-			return "400"
+			return "300"
 		}
 	}
 		
