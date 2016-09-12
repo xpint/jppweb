@@ -304,10 +304,30 @@ getNowTimeNiceSS = function(){
 }
 
 
+// add  getNowTimeStr function with ms 精度
+getNowWithMs = function(){
+	//import time
+	
+	var nowTime = time.now();
+	nowTime.format="%H%M%S"
+	var nowTimeStr = tostring(nowTime) 
+	
+	var _, tm = ::Kernel32.GetSystemTime( nowTime )
+
+	var res = string.format("%s%03i",nowTimeStr, tm.milliseconds);	
+	
+	return res; 
+}
+
+
 xLog = function(logstr){
 	var localtime = time.now()
 	localtime.format="%H:%M:%S";
 	var slocaltime = tostring(localtime)
+	
+	var _, tm = ::Kernel32.GetSystemTime( localtime )
+	
+	slocaltime = string.format("%s.%03i",slocaltime, tm.milliseconds);	
 	//是否 记录日志 增加 开关
 	xfile.write(slocaltime, '  ##  ',logstr ,'\n');
 	..io.print(slocaltime, '  ##  ',logstr ,'\n')
@@ -1103,9 +1123,14 @@ cliReceiveThread = function(){
 			var localtime = time.now()
 			localtime.format="%H:%M:%S";
 			var slocaltime = tostring(localtime)
+			
+			var _, tm = ::Kernel32.GetSystemTime( localtime )
+			slocaltime = string.format("%s.%03i",slocaltime, tm.milliseconds);	
+			
 			xfile.write(slocaltime, logstr ,'\n');
 			//xfile.flush();	
 		}
+		
 		
 		xLogFlush = function(){
 			xfile.flush();
@@ -1243,6 +1268,10 @@ cliCmdReceiveThread = function(){
 						var localtime = time.now()
 						localtime.format="%H:%M:%S";
 						var slocaltime = tostring(localtime)
+						
+						var _, tm = ::Kernel32.GetSystemTime( localtime )
+						slocaltime = string.format("%s.%03i",slocaltime, tm.milliseconds);	
+						
 						xfile.write(slocaltime, logstr ,'\n');
 						//xfile.flush();	
 					}
@@ -3309,6 +3338,8 @@ bidFinalAll = function(varTime = "1"){
 }
 
 
+
+
 bidConfirmNice = function(){
 
 
@@ -3326,13 +3357,14 @@ bidConfirmNice = function(){
 		..io.print(1899, "curBidPriceNum error !!!!")	
 	}
 	
-	xLog("循环与最新行情进行比较，然后提交出价")	
+	xLog("循环与最新行情进行比较，然后提交出价")
+	nowTimeStr = ""	
 	while(true){	
 	
 		//win.delay(20)	
-		nowTime = time.now()
-		nowTime.format="%H%M%S";
-		nowTimeStr = tostring(nowTime) 
+		//nowTime = time.now()
+		//nowTime.format="%H%M%S";
+		//nowTimeStr = tostring(nowTime) 
 		nowTimeStrOld = ""
 		
 		var hqLastPriceStr = cliGetLastPrice()
@@ -3343,9 +3375,10 @@ bidConfirmNice = function(){
 		var bidSubHqPriceNum = curBidPriceNum - hqLastPriceNum; 
 		
 		
+		// nowTimeStr 精确到  毫秒  
+		nowTimeStr = getNowWithMs()
 
-		//if(nowTimeStr<"00:00:10"){ // 未到最后出价时间
-		if(nowTimeStr<timeLine){ // 未到最后出价时间    112955  平均提交耗时 4.2s
+		if(nowTimeStr<timeLine){ // 未到最后出价时间    112955-000  平均提交耗时 4.2s
 			xLog("未到最后出价时间，行情："+hqLastPriceStr+";   出价："+curBidPriceStr)
 			win.delay(25)
 			
@@ -3365,7 +3398,7 @@ bidConfirmNice = function(){
 				//}
 			//}
 			
-			if(nowTimeStr >= bid2Time){   //  112953   
+			if(nowTimeStr >= bid2Time){   //  112953 000   
 				if (hqLastPriceNum >= curBidPriceNumSub100) {
 					xLog("###	!!!提前100出价!!!   当前时间大于等于"+bid2Time+ "且行情比出价高100, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
 					pressF3()  // clk cancel btn
@@ -3373,7 +3406,7 @@ bidConfirmNice = function(){
 				}
 			}
 			
-			if(nowTimeStr >= bid4Time){ // 112954
+			if(nowTimeStr >= bid4Time){ // 112954-000
 				if (hqLastPriceNum >= curBidPriceNumSub200) {
 					xLog("###	!!!提前200出价!!!   当前时间大于等于"+bid4Time+ "且行情比出价高200, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
 					pressF3()  // clk cancel btn
@@ -3383,7 +3416,7 @@ bidConfirmNice = function(){
 			
 	
 			
-			if(nowTimeStr >= "112940"){
+			if(nowTimeStr >= "112940000"){ // nowTimeStr 精确到  毫秒  112940-000 
 				if (bidSubHqPriceNum >= 1500) {
 					xLog("###	!!!出价过高重新出价!!!   当前时间大于等于 112940 ， 且行情比出价高1500, 立即点击取消按钮，进入bidNice2下次出价!!! 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
 					clkBidCancel300()  // clk cancel btn
