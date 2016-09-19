@@ -3380,13 +3380,14 @@ bidConfirmNice = function(){
 
 		if(nowTimeStr<timeLine){ // 未到最后出价时间    112955-000  平均提交耗时 4.2s
 			xLog("未到最后出价时间，行情："+hqLastPriceStr+";   出价："+curBidPriceStr)
-			win.delay(25)
+			win.delay(20)
 			
 			//..io.print(1730, "curPriceBid:", curBidPriceNum, "hqLastPrice:", hqLastPriceNum)
 			
 			if (hqLastPriceNum >= curBidPriceNum) { // 如果，目前最高价，大于出价，立即发出
-				xLog("###	!!!立即出价!!!   行情 到达(大于等于) 出价，行情："+hqLastPriceStr+";     出价："+curBidPriceStr)	
+				
 				pressF3()
+				xLog("###	!!!立即出价!!!  当前时间"+nowTimeStr+"  行情 到达(大于等于) 出价，行情："+hqLastPriceStr+";     出价："+curBidPriceStr)	
 				break;
 			}	
 	
@@ -3400,16 +3401,18 @@ bidConfirmNice = function(){
 			
 			if(nowTimeStr >= bid2Time){   //  112953 000   
 				if (hqLastPriceNum >= curBidPriceNumSub100) {
-					xLog("###	!!!提前100出价!!!   当前时间大于等于"+bid2Time+ "且行情比出价高100, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
+					
 					pressF3()  // clk cancel btn
+					xLog("###	!!!提前100出价!!!   当前时间"+nowTimeStr+"大于等于"+bid2Time+ "且行情比出价高100, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
 					break;	
 				}
 			}
 			
 			if(nowTimeStr >= bid4Time){ // 112954-000
 				if (hqLastPriceNum >= curBidPriceNumSub200) {
-					xLog("###	!!!提前200出价!!!   当前时间大于等于"+bid4Time+ "且行情比出价高200, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
+					
 					pressF3()  // clk cancel btn
+					xLog("###	!!!提前200出价!!!   当前时间"+nowTimeStr+"大于等于"+bid4Time+ "且行情比出价高200, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
 					break;	
 				}
 			}
@@ -3418,7 +3421,7 @@ bidConfirmNice = function(){
 			
 			if(nowTimeStr >= "112940000"){ // nowTimeStr 精确到  毫秒  112940-000 
 				if (bidSubHqPriceNum >= 1500) {
-					xLog("###	!!!出价过高重新出价!!!   当前时间大于等于 112940 ， 且行情比出价高1500, 立即点击取消按钮，进入bidNice2下次出价!!! 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
+					xLog("###	!!!出价过高重新出价!!!   当前时间"+nowTimeStr+"大于等于 112940 ， 且行情比出价高1500, 立即点击取消按钮，进入bidNice2下次出价!!! 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
 					clkBidCancel300()  // clk cancel btn
 					break;	
 				}
@@ -3426,8 +3429,9 @@ bidConfirmNice = function(){
 			
 		}
 		else {  // 到了最后出价时间，不管任何情况，选择出价 // 53秒后，不管任何情况都应该出价了
-			xLog("###	!!!强制出价!!!    到达最后出价时间:"+timeLine+" 强制出价,，行情："+hqLastPriceNum+"，出价："+curBidPriceStr)
+			
 			pressF3()
+			xLog("###	!!!强制出价!!!      当前时间"+nowTimeStr+"到达最后出价时间:"+timeLine+" 强制出价,，行情："+hqLastPriceNum+"，出价："+curBidPriceStr)
 			break;	
 		}
 	}		
