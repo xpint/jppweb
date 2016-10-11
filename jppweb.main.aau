@@ -1127,6 +1127,8 @@ cliReceiveThread = function(){
 			var _, tm = ::Kernel32.GetSystemTime( localtime )
 			slocaltime = string.format("%s.%03i",slocaltime, tm.milliseconds);	
 			
+			..io.print(slocaltime, logstr);
+			
 			xfile.write(slocaltime, logstr ,'\n');
 			//xfile.flush();	
 		}
@@ -1208,13 +1210,15 @@ cliReceiveThread = function(){
 				import string
 				if (tmpPrice != null)  and ( tmpPrice != ""){
 					tmpPrice = tostring(tonumber(tmpPrice) + 300)
-					if (string.len(tmpPrice) >= 5) and (string.sub(tmpPrice,4,5) == "00")
+					var slen = string.len(tmpPrice)
+
+					if (slen >= 5)  and (string.sub(tmpPrice,slen-1,slen) == "00")  // 有效行情判断逻辑
         				tab.lastPrice = "p-"+tmpPrice
         		}
         		
         		if (i % 5 = 0){
-        			..io.print("..[local].. get new hqPrice running ...... cli_thread_getlastPrice-"+tab.lastPrice)
-        			xLog("....[local]..get new hqPrice running ...... cli_thread_getlastPrice-"+tab.lastPrice)
+        			//..io.print("..[local].. get new hqPrice running ...... cli_thread_getlastPrice-"+tab.lastPrice)
+        			xLog("..[local]..get hq running..cli_thread_getlastPrice-"+tab.lastPrice)
         			xLogFlush()
         		}
 			
@@ -3058,6 +3062,11 @@ bidTwice = function(){
 
 
 // 自动登陆 9:30
+pressEnter = function(){
+	import key
+	key.press( "ENTER" )		
+}
+
 
 openLoginPage = function(){
 	xLog("@点击浏览器地址栏，进入国拍拍牌页面")
@@ -3079,8 +3088,9 @@ openLoginPage = function(){
     win.delay(500)	
 	
 	
-	// click web go
-	clkBtnValue(790,50) // 点击地址栏，进入页面
+	// click web go   
+	//clkBtnValue(790,50) // 点击地址栏，进入页面
+	pressEnter()
 	
 	xLog("等待10秒，等待页面打开")
 	win.delay(10000)
@@ -3121,11 +3131,11 @@ openLoginPage = function(){
 openLoginPageAll = function(){
 	
 	xLog("进入国拍网页")
-	startCamPauseRecord()
+	//startCamPauseRecord()
 	win.delay(3000)
 	openLoginPage()	
 	win.delay(3000)
-	startCamPauseRecord()	
+	//startCamPauseRecord()	
 	xLogFlush()
 	
 }
@@ -3360,6 +3370,12 @@ bidConfirmNice = function(){
 	xLog("循环与最新行情进行比较，然后提交出价")
 	nowTimeStr = ""	
 	while(true){	
+	
+		if (subThreadTable.isRunningbidNice == "n")
+		{
+			//subThreadTable.isRunningbidNice = "n"
+			return ; 
+		}
 	
 		//win.delay(20)	
 		//nowTime = time.now()
@@ -3668,9 +3684,26 @@ bidNice_Y = function(){
 }
 
 
+subThreadTable.isRunningbidNice = "n"
 
 bidNice = function(){
 
+	if (subThreadTable.isRunningbidNice == "n")
+	{
+		subThreadTable.isRunningbidNice = "y"
+	}else {  // if "y"		
+		//subThreadTable.isRunningbidNice = "s"
+		//while(subThreadTable.isRunningbidNice != "n") 	
+		//{
+		//	sleep(100)	
+		//}
+		
+		//clkBidCancel300()  // 点击取消出价，然后开始重新出价	
+		//sleep(200)
+		//clkBidCancel300()	
+		//subThreadTable.isRunningbidNice = "y"			
+	}
+	
 
 	xLog("!!!!	开始最终出价")
 	startTime1 = time.now()
@@ -3736,15 +3769,37 @@ bidNice = function(){
 		bidNice()		
 	}
 	elseif(tmpCodeResult == "y"){
-		clkBidCancel300()
-		clkErrWndBtn300()
-		win.delay(500)
-		bidNice()	
-	}	
+		xLog("点击刷新验证码，F7重新发起验证码识别"+curBidPriceStr)	
+		mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+		win.delay(50)
+		mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
+		win.delay(100)
+		
+		tmpCodeResult = pressF7("allndmt")
+		
+		if(tmpCodeResult == "y"){
+			clkBidCancel300()
+			clkErrWndBtn300()
+			win.delay(500)
+			bidNice()	
+		}	
+		else
+			bidConfirmNice()
+	}
 	else
 		bidConfirmNice()
 		
+
+		
 	subThreadTable.threadRecImgResult = "";
+
+	
+	if (subThreadTable.isRunningbidNice == "n"){
+		//subThreadTable.isRunningbidNice = "n"
+		clkBidCancel300()
+		xLog("取消出价执行，重新进行最后出价, subThreadTable.isRunningbidNice", subThreadTable.isRunningbidNice)
+		return ; 
+	}
 		
 	
 	
@@ -3766,6 +3821,7 @@ bidNice = function(){
 	//isBidPageNice() // 等待，直到返回到主页
 	
 	//bidNice2()
+	subThreadTable.isRunningbidNice = "n"
 	
 	//clkErrWndBtn300()	
 }
@@ -4055,18 +4111,25 @@ hk.proc=function(msg,vkcode,scancode){
 				win.delay(200)
 				clkErrWndBtn300()	
             }
-            else if  (kn == "F3") or (kn = "ENTER"){ // è·è?ìá??    781￡? 569
+            else if  (kn == "F3") {//or (kn = "ENTER"){ // è·è?ìá??    781￡? 569
 				pressF3()
             }
           //  else if  (kn == "F4"){ // 1?±?ìáê?     888￡? 550
           //  	clkErrWndBtn300()
           //  }
-          //  else if  (kn == "F5"){ // 1??à?¨?¨￠¨o?     888?ê? 550
+            else if  (kn == "F5"){ //出价减100
           //  	setPrice(100)
-          //  }
-            else if  (kn == "F6"){ // 1??à?¨?¨￠¨o?     888?ê? 550
+          		subThreadTable.isRunningbidNice = "n"	 // 设置通知信号，终止  bidnice 执行
+          	    var tmpNum = tonumber(f1Price)
+          	   	f1Price = tostring(tmpNum-100) 
+          	   //	clkBidCancel300()  // 
+            }
+            else if  (kn == "F6"){ // 出价加100   // 设置通知信号，终止  bidnice 执行
 				//thread.create(threadRecImgJpp)	
-				startThreadRecImg("allndmt")
+				//startThreadRecImg("allndmt")
+				subThreadTable.isRunningbidNice = "n"
+				var tmpNum = tonumber(f1Price)
+          	   	f1Price = tostring(tmpNum+100) 
             }
 			else if  (kn == "F7"){ 
 				xLog("start F7")
@@ -4270,7 +4333,7 @@ hk.proc=function(msg,vkcode,scancode){
 				xLog("endCode")	
 				xLogFlush() 
             }
-            else if(kn == "["){
+          /*  else if(kn == "["){
             	//loginOnceAll()
             	..io.print("###cam Start")
             	startCamPauseRecordNew()
@@ -4284,14 +4347,14 @@ hk.proc=function(msg,vkcode,scancode){
             }
             else if(kn == ";")  {   // 输入自定义价格
             	setCustomAddPriceEdtValue()
-            }
+            }*/
             else if(kn == "F2"){  // 确认验证码
             	isYzmOk = "1"
 				subThreadTable.threadRecImgConsoleFlag = "mend"   
 				//subThreadTable.threadRecImgResult = getMunalYzm()
 				//import thread
 				//thread.terminate(gThreadRecImgReqOnceHandle,0)        	
-            }
+            }/*
             else if(kn == "F5") {  // F7后，手动输入验证码完成后，可以F5手动确认验证码并进入出价确认判断
             // 全手动  F1 --》  F7 ---》 F5
             	isYzmOk = "1"
@@ -4314,7 +4377,7 @@ hk.proc=function(msg,vkcode,scancode){
 				isBidPageNice()
 			
 				bidNice2()
-            }
+            }*/
             
 
            // io.print("°′??",kn)
@@ -4413,7 +4476,7 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 	
 	//..io.print(  2438 , allBidFlag, clientIp, "strIndexOF",string.indexOf(allBidFlag, "0"))
 	
-	..io.print( "win.timer wait cCmd allBidFlag Call xxx:" , allBidFlag, clientIp)
+	..io.print( nowTimeStr, "win.timer wait cCmd allBidFlag Call xxx:" , allBidFlag, clientIp)
 	
 	if (allBidFlag!=null) and (string.indexOf(allBidFlag, clientIp)!=null){
 		..io.print("2543", allBidFlag, "bid in")
