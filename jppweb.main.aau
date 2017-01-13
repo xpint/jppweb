@@ -2469,6 +2469,41 @@ pressF1 = function(){
 }
 
 
+//  设置直接出价价格
+pressF1BidPrice = function(varBidPrice){
+	xLog("@直接价格进行出价")
+	xLog("设置直接出价价格")
+	
+	if (subThreadTable.threadRecImgResult != "1111") or (subThreadTable.threadRecImgResult != "y")
+	{
+		setCustomAddPriceEdtValue()
+		isYzmOk = "0"
+		
+		xLog("设置直接出价价格")
+		setCustomBidPriceEdtValueNice (varBidPrice)
+	}
+	//clkAdd300()  // clk + 300
+	win.delay(10)	
+	
+	xLog("获取实际出价价格，用来与行情进行比较")
+	getCurBidPrice()
+	xLog("###	实际出价，["+getNowTime()+"] curBidPriceStr："+curBidPriceStr)
+	xLogFlush()
+	//setPrice(f1Price)   // add 200 
+	win.delay(10)	
+	
+	xLog("点击出价按钮")
+	clkBidBtn300() // clk  bid btn
+	
+	//demo
+	//import mouse
+	//mouse.click( 845, 559,true); 
+	//end demo	
+	//mouse.move(0,0,true)
+}
+
+
+
 
 pressF1Nice = function(addPrice){
 	xLog("@加自定义价格进行出价")
@@ -3827,6 +3862,146 @@ bidNice = function(){
 }
 
 
+//  直接出价 入口
+bidNiceBidPrice = function(varBidPrice){
+
+	if (subThreadTable.isRunningbidNice == "n")
+	{
+		subThreadTable.isRunningbidNice = "y"
+	}else {  // if "y"		
+		//subThreadTable.isRunningbidNice = "s"
+		//while(subThreadTable.isRunningbidNice != "n") 	
+		//{
+		//	sleep(100)	
+		//}
+		
+		//clkBidCancel300()  // 点击取消出价，然后开始重新出价	
+		//sleep(200)
+		//clkBidCancel300()	
+		//subThreadTable.isRunningbidNice = "y"			
+	}
+	
+
+	xLog("!!!!	开始最终出价")
+	startTime1 = time.now()
+	startTime1.format="%H%M%S";
+	xLog("F1 Start...从配置中输入自定义加价，点击自定义加价，点击出价获取验证码", startTime1)
+	
+	// 提交出价
+	//检查验证码识别结果 不为 1111， y 时， 为首次提交出价, 否则直接点击出价
+	pressF1BidPrice(varBidPrice) // 从配置中输入自定义加价，点击自定义加价，点击出价获取验证码, 
+	
+	xLog("	##	提交出价")
+		
+	// 等待验证码， 如果 识别码 不对，应超时跳出，或重取验证码
+	xLog("循环等待获取识别码，2秒超时")
+	var sbmTimeOut = 0
+	//while(true){
+		/*
+		var vtype = getImgSbm()
+		
+		xLog("3183-bidNice-vtype:"+vtype)
+		
+		if  (vtype != "") and (string.indexOf(qCode, vtype)!=null) {
+			break;
+		}
+		else if (vtype != "") and (string.indexOf(zCode, vtype)!=null){
+			break;
+		}
+		else if (vtype != "") and (string.indexOf(hCode, vtype)!=null){
+			break;
+		}
+		*/
+		win.delay(600)
+		
+		import mouse
+		mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+		win.delay(50)
+		mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
+		
+		sbmTimeOut = sbmTimeOut + 300
+		
+		
+	//	if (sbmTimeOut > 400){  // 2秒后超时
+	//		xLog("###	！！！验证码识别码超时，["+getNowTime()+"] sbmTimeOut："+tostring(sbmTimeOut))
+	//		break;
+	//	}
+	//}				
+		
+	xLog("开始发起验证码识别")	
+	// 识别验证码并输入
+	xLog("###	开始识别验证码，["+getNowTime()+"] 验证码识别类型-yzmType："+yzmType)
+	var tmpCodeResult = pressF7("allndmt")
+	xLog("###	完成识别验证码，["+getNowTime()+"] 验证码识别结果-gCode："+tmpCodeResult)
+	xLog("##	输入验证码完成")
+	//mainForm.msgbox(nowTimeStr+"-"+gDoneTimer)
+		
+	// 提交
+	xLog("获取出价价格，并准备与最新行情进行比较，然后提交出价"+curBidPriceStr)	
+	if (tmpCodeResult == "1111")
+	{	
+		clkBidCancel300()
+		clkErrWndBtn300()		
+		win.delay(500)
+		bidNice()		
+	}
+	elseif(tmpCodeResult == "y"){
+		xLog("点击刷新验证码，F7重新发起验证码识别"+curBidPriceStr)	
+		mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+		win.delay(50)
+		mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
+		win.delay(100)
+		
+		tmpCodeResult = pressF7("allndmt")
+		
+		if(tmpCodeResult == "y"){
+			clkBidCancel300()
+			clkErrWndBtn300()
+			win.delay(500)
+			bidNice()	
+		}	
+		else
+			bidConfirmNice()
+	}
+	else
+		bidConfirmNice()
+		
+
+		
+	subThreadTable.threadRecImgResult = "";
+
+	
+	if (subThreadTable.isRunningbidNice == "n"){
+		//subThreadTable.isRunningbidNice = "n"
+		clkBidCancel300()
+		xLog("取消出价执行，重新进行最后出价, subThreadTable.isRunningbidNice", subThreadTable.isRunningbidNice)
+		return ; 
+	}
+		
+	
+	
+	startTime2 = time.now()
+	startTime2.format="%H%M%S";	
+	..io.print("bid final all cost :", startTime2, tonumber(startTime2)-tonumber(startTime1))
+	
+	xLog("!!!!	结束最终出价,	全过程耗时：	"+(tonumber(startTime2)-tonumber(startTime1)))
+	xLogFlush()
+	
+	isBidPageNice() // 等待，直到返回到主页
+	
+	bidNice2()
+	
+	//thread.create(threadSendMsgToMgrSvr)
+	
+	clkErrWndBtn300()	
+	
+	//isBidPageNice() // 等待，直到返回到主页
+	
+	//bidNice2()
+	subThreadTable.isRunningbidNice = "n"
+	
+	//clkErrWndBtn300()	
+}
 
 
 bidTestAll = function(){
@@ -4071,11 +4246,64 @@ hotkey.reg(
 
 
 hotkey.reg(
-    "CTRL","7", 
+    "SHIFT","F1", 
     function(hwnd,...){
-		bidOnceAllGs()
+		pressF1BidPrice("87300")
     } 
 )
+
+
+hotkey.reg(
+    "SHIFT","F2", 
+    function(hwnd,...){
+		pressF1BidPrice("87400")
+    } 
+)
+
+
+hotkey.reg(
+    "SHIFT","F3", 
+    function(hwnd,...){
+		pressF1BidPrice("87500")
+    } 
+)
+
+
+hotkey.reg(
+    "SHIFT","F4", 
+    function(hwnd,...){
+		pressF1BidPrice("87600")
+    } 
+)
+
+
+hotkey.reg(
+    "SHIFT","F5", 
+    function(hwnd,...){
+		pressF1BidPrice("87700")
+    } 
+)
+
+
+
+hotkey.reg(
+    "SHIFT","F6", 
+    function(hwnd,...){
+		pressF1BidPrice("87800")
+    } 
+)
+
+
+
+
+
+
+
+
+
+
+
+
 
 // alt + k  开始暂停录像
 startCamPauseRecordNew = function(){
