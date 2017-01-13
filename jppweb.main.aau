@@ -2476,7 +2476,7 @@ pressF1BidPrice = function(varBidPrice){
 	
 	if (subThreadTable.threadRecImgResult != "1111") or (subThreadTable.threadRecImgResult != "y")
 	{
-		setCustomAddPriceEdtValue()
+		//setCustomAddPriceEdtValue()
 		isYzmOk = "0"
 		
 		xLog("设置直接出价价格")
