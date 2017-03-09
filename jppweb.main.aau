@@ -60,7 +60,7 @@
 
 import win.ui;
 /*DSG{{*/
-mainForm = ..win.form(cls="jppForm";text="201603-【聚·拍牌】官方发布-一键拍牌-2015年11月18日";right=844;bottom=673;edge=1;frame=1)
+mainForm = ..win.form(cls="jppForm";text="好运来拍牌";right=844;bottom=673;edge=1;frame=1)
 mainForm.add(
 button={cls="button";text="重启定时器";left=439;top=439;right=514;bottom=473;z=58};
 button10={cls="button";text="二次出价ctrl4";left=699;top=613;right=824;bottom=647;z=92};
@@ -88,6 +88,7 @@ edit14={cls="edit";text="edit14";left=536;top=300;right=628;bottom=325;edge=1;mu
 edit15={cls="edit";text="edit15";left=536;top=329;right=628;bottom=354;edge=1;multiline=1;z=80};
 edit16={cls="edit";text="10000";left=702;top=231;right=794;bottom=259;edge=1;multiline=1;z=82};
 edit17={cls="edit";text="edit17";left=290;top=484;right=382;bottom=509;edge=1;multiline=1;z=96};
+edit18={cls="edit";text="edit18";left=82;top=481;right=203;bottom=533;color=255;edge=1;font=LOGFONT( h=-35;weight=700 );multiline=1;z=100};
 edit2={cls="edit";text="300";left=98;top=236;right=245;bottom=261;edge=1;multiline=1;z=20};
 edit3={cls="edit";left=98;top=124;right=245;bottom=149;edge=1;multiline=1;z=8};
 edit4={cls="edit";text="1000";left=98;top=271;right=195;bottom=296;edge=1;multiline=1;z=22};
@@ -211,12 +212,90 @@ zbtn={cls="button";text="Z";left=317;top=357;right=346;bottom=391;z=35}
 )
 /*}}*/
 
+var tmpFmTop = 0;
+var newform = ..win.form( top=10;bottom=500;left=800;right=1000;text="最新价";max=false;min=false)
+newform.add(
+edtTime   	={cls="edit";text="当前时间";	left=0;top=1;  right=300;bottom=99;color=8;edge=1;font=LOGFONT( h=-28;weight=700 );multiline=1;z=100};
+edtFtPrice	={cls="edit";text="估价";		left=0;top=100;right=300;bottom=199;color=255;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
+edtNewPrice	={cls="edit";text="最新价";		left=0;top=200;right=300;bottom=299;color=255;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
+edtBidPrice	={cls="edit";text="出价";		left=0;top=300;right=300;bottom=399;color=8;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
+edtBidTime	={cls="edit";text="出价时间";	left=0;top=400;right=300;bottom=499;color=8;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
+)
+
 var manualYzm = "0"
 var manualBid = "0";
 var isYzmOk  = "0";
 
 var yzmType = "jpp"
 
+
+var lastp00 = 0;
+var lastp01 = 0;
+var lastp02 = 0;
+var lastp03 = 0;
+var lastp04 = 0;
+var lastp05 = 0;
+var lastp06 = 0;
+var lastp07 = 0;
+var lastp08 = 0;
+var lastp09 = 0;
+var lastp10 = 0;
+var lastp11 = 0;
+var lastp12 = 0;
+var lastp13 = 0;
+var lastp14 = 0;
+var lastp15 = 0;
+var lastp16 = 0;
+var lastp17 = 0;
+var lastp18 = 0;
+var lastp19 = 0;
+var lastp20 = 0;
+var lastp21 = 0;
+var lastp22 = 0;
+var lastp23 = 0;
+var lastp24 = 0;
+var lastp25 = 0;
+var lastp26 = 0;
+var lastp27 = 0;
+var lastp28 = 0;
+var lastp29 = 0;
+var lastp30 = 0;
+var lastp31 = 0;
+var lastp32 = 0;
+var lastp33 = 0;
+var lastp34 = 0;
+var lastp35 = 0;
+var lastp36 = 0;
+var lastp37 = 0;
+var lastp38 = 0;
+var lastp39 = 0;
+var lastp40 = 0;
+var lastp41 = 0;
+var lastp42 = 0;
+var lastp43 = 0;
+var lastp44 = 0;
+var lastp45 = 0;
+var lastp46 = 0;
+var lastp47 = 0;
+var lastp48 = 0;
+var lastp49 = 0;
+var lastp50 = 0;
+var lastp51 = 0;
+var lastp52 = 0;
+var lastp53 = 0;
+var lastp54 = 0;
+var lastp55 = 0;
+var lastp56 = 0;
+var lastp57 = 0;
+var lastp58 = 0;
+var lastp59 = 0;
+var lastp60 = 0;
+
+var delta51_50 = 0;
+var delta52_50 = 0; 
+var delta53_50 = 0; 
+var delta54_50 = 0; 
+var delta55_50 = 0; 
 
 _Beep = ::Kernel32.api("Beep","int(int,int)"); 
 
@@ -315,6 +394,20 @@ getNowWithMs = function(){
 	var _, tm = ::Kernel32.GetSystemTime( nowTime )
 
 	var res = string.format("%s%03i",nowTimeStr, tm.milliseconds);	
+	
+	return res; 
+}
+
+getNowWithMsWithSep = function(){
+	//import time
+	
+	var nowTime = time.now();
+	nowTime.format="%H:%M:%S"
+	var nowTimeStr = tostring(nowTime) 
+	
+	var _, tm = ::Kernel32.GetSystemTime( nowTime )
+
+	var res = string.format("%s.%03i",nowTimeStr, tm.milliseconds);	
 	
 	return res; 
 }
@@ -1105,7 +1198,6 @@ threadRecImgReqOnce = function()
 
 
 
-
 cliReceiveThread = function(){
 
 		// log module
@@ -1174,6 +1266,7 @@ cliReceiveThread = function(){
         						
         						if (i % 5 = 0){
         							..io.print("..[net].. get new hqPrice running ...... cli_thread_getlastPrice-"+str)
+     								//newform.edit.text = str;
         							xLog("..[net].. get new hqPrice running ...... cli_thread_getlastPrice-"+str)       						
         							xLogFlush()
         						}
@@ -1200,6 +1293,8 @@ cliReceiveThread = function(){
 			
 			tab.lastPrice = "1111"  // init lastPrice = 1111
 			
+		
+			
 			var i = 0
 			while(true){
 				var tmpPrice =  getLastPriceByImg();
@@ -1219,10 +1314,11 @@ cliReceiveThread = function(){
         		if (i % 5 = 0){
         			//..io.print("..[local].. get new hqPrice running ...... cli_thread_getlastPrice-"+tab.lastPrice)
         			xLog("..[local]..get hq running..cli_thread_getlastPrice-"+tab.lastPrice)
+        			//newform.edit1.text = tab.lastPrice;  //hqlhc
         			xLogFlush()
         		}
 			
-				sleep(100)
+				sleep(20)
 				i = i + 1
 			}
 	
@@ -2469,8 +2565,9 @@ pressF1 = function(){
 }
 
 
-//  设置直接出价价格
-pressF1BidPrice = function(varBidPrice){
+
+
+pressF1Tmp = function(varBidPrice){
 	xLog("@直接价格进行出价")
 	xLog("设置直接出价价格")
 	
@@ -2480,7 +2577,8 @@ pressF1BidPrice = function(varBidPrice){
 		isYzmOk = "0"
 		
 		xLog("设置直接出价价格")
-		setCustomBidPriceEdtValueNice (varBidPrice)
+		//clkCustomAddPriceBtn()
+		setCustomBidPriceEdtValueNice(varBidPrice)
 	}
 	//clkAdd300()  // clk + 300
 	win.delay(10)	
@@ -2501,7 +2599,6 @@ pressF1BidPrice = function(varBidPrice){
 	//end demo	
 	//mouse.move(0,0,true)
 }
-
 
 
 
@@ -2770,8 +2867,8 @@ pressF7 = function(varYzmType = "jpp"){
 			//	break ;
 			//}
 			else {
-				win.delay(200)
-				ImgRectimeOut = ImgRectimeOut + 200
+				win.delay(50)
+				ImgRectimeOut = ImgRectimeOut + 50
 			}	
 			
 			// 10分钟没有识别返回验证码，则超时，返回 y 重新发起验证码识别
@@ -3393,6 +3490,7 @@ bidConfirmNice = function(){
 	//var curBidPriceNum = 0
 	try{
 		curBidPriceNum = tonumber(curBidPriceStr)
+		newform.edtBidPrice.text = curBidPriceStr;
 		curBidPriceNumSub100 = curBidPriceNum - 100
 		curBidPriceNumSub200 = curBidPriceNum - 200
 		curBidPriceNumSub300 = curBidPriceNum - 300
@@ -3411,6 +3509,7 @@ bidConfirmNice = function(){
 			//subThreadTable.isRunningbidNice = "n"
 			return ; 
 		}
+		win.delay(10);
 	
 		//win.delay(20)	
 		//nowTime = time.now()
@@ -3428,17 +3527,96 @@ bidConfirmNice = function(){
 		
 		// nowTimeStr 精确到  毫秒  
 		nowTimeStr = getNowWithMs()
+		
+		if(nowTimeStr >= "112940000") and (nowTimeStr <= "112940999")
+		{
+			lastp40 = hqLastPriceNum;
+		}
+		//else if if(nowTimeStr >= "112940000") and (nowTimeStr <= "112940999")	{ lastp41 = hqLastPriceNum; }
+		//else if (nowTimeStr == '112953')	{ lastp53 = lastpnum;  delta53_50 = lastp53 - lastp50; }
+		//else if (nowTimeStr == '112954')	{ lastp54 = lastpnum;  delta54_50 = lastp54 - lastp50; }
+		//else if (nowTimeStr == '112955')	{ lastp55 = lastpnum;  delta55_50 = lastp55 - lastp50; }
+		else if(nowTimeStr >= "112900000") and	(nowTimeStr <= "112900999")	{ lastp00 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112901000") and	(nowTimeStr <= "112901999")	{ lastp01 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112902000") and	(nowTimeStr <= "112902999")	{ lastp02 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112903000") and	(nowTimeStr <= "112903999")	{ lastp03 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112904000") and	(nowTimeStr <= "112904999")	{ lastp04 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112905000") and	(nowTimeStr <= "112905999")	{ lastp05 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112906000") and	(nowTimeStr <= "112906999")	{ lastp06 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112907000") and	(nowTimeStr <= "112907999")	{ lastp07 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112908000") and	(nowTimeStr <= "112908999")	{ lastp08 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112909000") and	(nowTimeStr <= "112909999")	{ lastp09 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112910000") and	(nowTimeStr <= "112910999")	{ lastp10 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112911000") and	(nowTimeStr <= "112911999")	{ lastp11 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112912000") and	(nowTimeStr <= "112912999")	{ lastp12 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112913000") and	(nowTimeStr <= "112913999")	{ lastp13 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112914000") and	(nowTimeStr <= "112914999")	{ lastp14 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112915000") and	(nowTimeStr <= "112915999")	{ lastp15 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112916000") and	(nowTimeStr <= "112916999")	{ lastp16 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112917000") and	(nowTimeStr <= "112917999")	{ lastp17 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112918000") and	(nowTimeStr <= "112918999")	{ lastp18 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112919000") and	(nowTimeStr <= "112919999")	{ lastp19 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112920000") and	(nowTimeStr <= "112920999")	{ lastp20 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112921000") and	(nowTimeStr <= "112921999")	{ lastp21 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112922000") and	(nowTimeStr <= "112922999")	{ lastp22 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112923000") and	(nowTimeStr <= "112923999")	{ lastp23 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112924000") and	(nowTimeStr <= "112924999")	{ lastp24 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112925000") and	(nowTimeStr <= "112925999")	{ lastp25 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112926000") and	(nowTimeStr <= "112926999")	{ lastp26 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112927000") and	(nowTimeStr <= "112927999")	{ lastp27 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112928000") and	(nowTimeStr <= "112928999")	{ lastp28 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112929000") and	(nowTimeStr <= "112929999")	{ lastp29 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112930000") and	(nowTimeStr <= "112930999")	{ lastp30 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112931000") and	(nowTimeStr <= "112931999")	{ lastp31 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112932000") and	(nowTimeStr <= "112932999")	{ lastp32 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112933000") and	(nowTimeStr <= "112933999")	{ lastp33 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112934000") and	(nowTimeStr <= "112934999")	{ lastp34 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112935000") and	(nowTimeStr <= "112935999")	{ lastp35 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112936000") and	(nowTimeStr <= "112936999")	{ lastp36 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112937000") and	(nowTimeStr <= "112937999")	{ lastp37 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112938000") and	(nowTimeStr <= "112938999")	{ lastp38 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112939000") and	(nowTimeStr <= "112939999")	{ lastp39 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112940000") and	(nowTimeStr <= "112940999")	{ lastp40 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112941000") and	(nowTimeStr <= "112941999")	{ lastp41 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112942000") and	(nowTimeStr <= "112942999")	{ lastp42 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112943000") and	(nowTimeStr <= "112943999")	{ lastp43 = hqLastPriceNum; }
+		//else if(nowTimeStr >= "112944000") and	(nowTimeStr <= "112944999")	{ lastp44 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112945000") and	(nowTimeStr <= "112945999")	{ lastp45 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112946000") and	(nowTimeStr <= "112946999")	{ lastp46 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112947000") and	(nowTimeStr <= "112947999")	{ lastp47 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112948000") and	(nowTimeStr <= "112948999")	{ lastp48 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112949000") and	(nowTimeStr <= "112949999")	{ lastp49 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112950000") and	(nowTimeStr <= "112950999")	{ lastp50 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112951000") and	(nowTimeStr <= "112951999")	{ lastp51 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112952000") and	(nowTimeStr <= "112952999")	{ lastp52 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112953000") and	(nowTimeStr <= "112953999")	{ lastp53 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112954000") and	(nowTimeStr <= "112954999")	{ lastp54 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112955000") and	(nowTimeStr <= "112955999")	{ lastp55 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112956000") and	(nowTimeStr <= "112956999")	{ lastp56 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112957000") and	(nowTimeStr <= "112957999")	{ lastp57 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112958000") and	(nowTimeStr <= "112958999")	{ lastp58 = hqLastPriceNum; }
+		else if(nowTimeStr >= "112959000") and	(nowTimeStr <= "112959999")	{ lastp59 = hqLastPriceNum; }
+				
+		
+		if(nowTimeStr >= "112955500") 
+		{
+			 delta55_50 = lastp55 - lastp50;
+		}
+		else if(nowTimeStr >= "112954500") {  delta54_50 = lastp54 - lastp50; }
+		else if(nowTimeStr >= "112953500") {  delta53_50 = lastp53 - lastp50; }
+		else if(nowTimeStr >= "112952500") {  delta52_50 = lastp52 - lastp50; }
 
 		if(nowTimeStr<timeLine){ // 未到最后出价时间    112955-000  平均提交耗时 4.2s
 			xLog("未到最后出价时间，行情："+hqLastPriceStr+";   出价："+curBidPriceStr)
-			win.delay(20)
+			win.delay(10)
 			
 			//..io.print(1730, "curPriceBid:", curBidPriceNum, "hqLastPrice:", hqLastPriceNum)
 			
 			if (hqLastPriceNum >= curBidPriceNum) { // 如果，目前最高价，大于出价，立即发出
 				
-				pressF3()
+				pressF3()			
 				xLog("###	!!!立即出价!!!  当前时间"+nowTimeStr+"  行情 到达(大于等于) 出价，行情："+hqLastPriceStr+";     出价："+curBidPriceStr)	
+				newForm.edtBidTime.text = nowTimeStr;
 				break;
 			}	
 	
@@ -3455,6 +3633,7 @@ bidConfirmNice = function(){
 					
 					pressF3()  // clk cancel btn
 					xLog("###	!!!提前100出价!!!   当前时间"+nowTimeStr+"大于等于"+bid2Time+ "且行情比出价高100, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
+					newForm.edtBidTime.text = nowTimeStr;
 					break;	
 				}
 			}
@@ -3464,6 +3643,7 @@ bidConfirmNice = function(){
 					
 					pressF3()  // clk cancel btn
 					xLog("###	!!!提前200出价!!!   当前时间"+nowTimeStr+"大于等于"+bid4Time+ "且行情比出价高200, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
+					newForm.edtBidTime.text = nowTimeStr;
 					break;	
 				}
 			}
@@ -3483,6 +3663,7 @@ bidConfirmNice = function(){
 			
 			pressF3()
 			xLog("###	!!!强制出价!!!      当前时间"+nowTimeStr+"到达最后出价时间:"+timeLine+" 强制出价,，行情："+hqLastPriceNum+"，出价："+curBidPriceStr)
+			newForm.edtBidTime.text = nowTimeStr;
 			break;	
 		}
 	}		
@@ -3861,9 +4042,8 @@ bidNice = function(){
 	//clkErrWndBtn300()	
 }
 
-
 //  直接出价 入口
-bidNiceBidPrice = function(varBidPrice){
+bidNiceTmp = function(varBidPrice){
 
 	if (subThreadTable.isRunningbidNice == "n")
 	{
@@ -3880,7 +4060,7 @@ bidNiceBidPrice = function(varBidPrice){
 		//clkBidCancel300()	
 		//subThreadTable.isRunningbidNice = "y"			
 	}
-	
+
 
 	xLog("!!!!	开始最终出价")
 	startTime1 = time.now()
@@ -3889,54 +4069,37 @@ bidNiceBidPrice = function(varBidPrice){
 	
 	// 提交出价
 	//检查验证码识别结果 不为 1111， y 时， 为首次提交出价, 否则直接点击出价
-	pressF1BidPrice(varBidPrice) // 从配置中输入自定义加价，点击自定义加价，点击出价获取验证码, 
+	pressF1Tmp(varBidPrice) // 从配置中输入自定义加价，点击自定义加价，点击出价获取验证码, 
 	
 	xLog("	##	提交出价")
 		
 	// 等待验证码， 如果 识别码 不对，应超时跳出，或重取验证码
-	xLog("循环等待获取识别码，2秒超时")
-	var sbmTimeOut = 0
-	//while(true){
-		/*
-		var vtype = getImgSbm()
+	//xLog("循环等待获取识别码，2秒超时")
+	//var sbmTimeOut = 0
+
+	//win.delay(600)
 		
-		xLog("3183-bidNice-vtype:"+vtype)
+	//import mouse
+	//mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+	//win.delay(50)
+	//mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
 		
-		if  (vtype != "") and (string.indexOf(qCode, vtype)!=null) {
-			break;
-		}
-		else if (vtype != "") and (string.indexOf(zCode, vtype)!=null){
-			break;
-		}
-		else if (vtype != "") and (string.indexOf(hCode, vtype)!=null){
-			break;
-		}
-		*/
-		win.delay(600)
-		
-		import mouse
-		mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
-		win.delay(50)
-		mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
-		
-		sbmTimeOut = sbmTimeOut + 300
-		
-		
-	//	if (sbmTimeOut > 400){  // 2秒后超时
-	//		xLog("###	！！！验证码识别码超时，["+getNowTime()+"] sbmTimeOut："+tostring(sbmTimeOut))
-	//		break;
-	//	}
-	//}				
+	//sbmTimeOut = sbmTimeOut + 300
+	
+	// 选定验证码输入框
+	mouse.click(xImgEdt, yImgEdt, true);				
 		
 	xLog("开始发起验证码识别")	
 	// 识别验证码并输入
-	xLog("###	开始识别验证码，["+getNowTime()+"] 验证码识别类型-yzmType："+yzmType)
-	var tmpCodeResult = pressF7("allndmt")
-	xLog("###	完成识别验证码，["+getNowTime()+"] 验证码识别结果-gCode："+tmpCodeResult)
-	xLog("##	输入验证码完成")
+	//xLog("###	开始识别验证码，["+getNowTime()+"] 验证码识别类型-yzmType："+yzmType)
+	//var tmpCodeResult = pressF7("allndmt")
+	//xLog("###	完成识别验证码，["+getNowTime()+"] 验证码识别结果-gCode："+tmpCodeResult)
+	//xLog("##	输入验证码完成")
 	//mainForm.msgbox(nowTimeStr+"-"+gDoneTimer)
 		
 	// 提交
+	bidConfirmNice()
+	/*
 	xLog("获取出价价格，并准备与最新行情进行比较，然后提交出价"+curBidPriceStr)	
 	if (tmpCodeResult == "1111")
 	{	
@@ -3965,7 +4128,7 @@ bidNiceBidPrice = function(varBidPrice){
 	}
 	else
 		bidConfirmNice()
-		
+	*/	
 
 		
 	subThreadTable.threadRecImgResult = "";
@@ -4246,9 +4409,19 @@ hotkey.reg(
 
 
 hotkey.reg(
+    "CTRL","7", 
+    function(hwnd,...){
+		bidOnceAllGs()
+    } 
+)
+
+
+
+
+hotkey.reg(
     "SHIFT","F1", 
     function(hwnd,...){
-		pressF1BidPrice("87300")
+		bidNiceTmp("87300")
     } 
 )
 
@@ -4256,51 +4429,76 @@ hotkey.reg(
 hotkey.reg(
     "SHIFT","F2", 
     function(hwnd,...){
-		pressF1BidPrice("87400")
+		bidNiceTmp("87400")
     } 
 )
+
 
 
 hotkey.reg(
     "SHIFT","F3", 
     function(hwnd,...){
-		pressF1BidPrice("87500")
+		bidNiceTmp("87500")
     } 
 )
+
 
 
 hotkey.reg(
     "SHIFT","F4", 
     function(hwnd,...){
-		pressF1BidPrice("87600")
+		bidNiceTmp("87600")
     } 
 )
+
+
+
 
 
 hotkey.reg(
     "SHIFT","F5", 
     function(hwnd,...){
-		pressF1BidPrice("87700")
+		bidNiceTmp("87700")
     } 
 )
+
 
 
 
 hotkey.reg(
     "SHIFT","F6", 
     function(hwnd,...){
-		pressF1BidPrice("87800")
+		bidNiceTmp("87800")
     } 
 )
 
 
 
 
+hotkey.reg(
+    "SHIFT","F7", 
+    function(hwnd,...){
+		bidNiceTmp("87900")
+    } 
+)
 
 
 
 
+hotkey.reg(
+    "SHIFT","F8", 
+    function(hwnd,...){
+		bidNiceTmp("88800")
+    } 
+)
 
+
+hotkey.reg(
+    "SHIFT","F9", 
+    function(hwnd,...){
+		bidNiceTmp("88900")
+    } 
+)
 
 
 
@@ -4622,22 +4820,128 @@ hk.proc=function(msg,vkcode,scancode){
 
 
 
+getFtPrice = function(){
+	var	nowTime = time.now()
+	nowTime.format="%H%M%S";
+	var nowTimeStr = tostring(nowTime) 
+	
+	var lastP =  cliGetLastPrice();
+	
+	
+	try{
+		lastPnum = tonumber(lastP);
+		if (nowTimeStr == '112950')
+		{
+			lastPnum = lastPnum+700;
+		}
+		else {
+			lastPnum = lastPnum + 1000;
+		}
+	}
+	catch(e){
+		lastPnum = 1234;
+	}
+	
+	return tostring(lastPnum);
+}
+
+
 import win.timer
 var timer = win.timer( mainForm );
 timer.setInterval(1000)
 timer.disable()
 
 var timerImgClientHeartBeat = win.timer( mainForm );
-timerImgClientHeartBeat.setInterval(1000)
+timerImgClientHeartBeat.setInterval(500)
 timerImgClientHeartBeat.enable()
 
 subThreadTable.manualFlag = "0"   //  手动提交出价，手动输入完验证码后，按F2 , 设置 manualFlag  为  1， 不再接收远程调用命令
 timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
-
 	var	nowTime = time.now()
 	nowTime.format="%H%M%S";
-	
 	var nowTimeStr = tostring(nowTime) 
+	
+	
+	//newform.edit.text = cliGetLastPrice();
+	var lastP =   cliGetLastPrice();
+	
+	newform.edtTime.text = getNowWithMsWithSep();
+	newform.edtNewPrice.text = lastP;
+	newform.edtFtPrice.text = getFtPrice();
+	
+	try{
+		var lastpnum = tonumber(lastP)
+		if (nowTimeStr == '112950')
+		{
+			lastp50 = lastpnum;
+		}
+		else if (nowTimeStr == '112900') 	{ lastp00 = lastpnum; }
+		else if (nowTimeStr == '112901')	{ lastp01 = lastpnum; }
+		//else if (nowTimeStr == '112902')	{ lastp02 = lastpnum; }
+		//else if (nowTimeStr == '112903')	{ lastp03 = lastpnum; }
+		//else if (nowTimeStr == '112904')	{ lastp04 = lastpnum; }
+		else if (nowTimeStr == '112905')	{ lastp05 = lastpnum; }
+		//else if (nowTimeStr == '112906')	{ lastp06 = lastpnum; }
+		//else if (nowTimeStr == '112907')	{ lastp07 = lastpnum; }
+		//else if (nowTimeStr == '112908')	{ lastp08 = lastpnum; }
+		//else if (nowTimeStr == '112909')	{ lastp09 = lastpnum; }
+		else if (nowTimeStr == '112910')	{ lastp10 = lastpnum; }
+		else if (nowTimeStr == '112911')	{ lastp11 = lastpnum; }
+		//else if (nowTimeStr == '112912')	{ lastp12 = lastpnum; }
+		//else if (nowTimeStr == '112913')	{ lastp13 = lastpnum; }
+		//else if (nowTimeStr == '112914')	{ lastp14 = lastpnum; }
+		else if (nowTimeStr == '112915')	{ lastp15 = lastpnum; }
+		//else if (nowTimeStr == '112916')	{ lastp16 = lastpnum; }
+		//else if (nowTimeStr == '112917')	{ lastp17 = lastpnum; }
+		//else if (nowTimeStr == '112918')	{ lastp18 = lastpnum; }
+		//else if (nowTimeStr == '112919')	{ lastp19 = lastpnum; }
+		else if (nowTimeStr == '112920')	{ lastp20 = lastpnum; }
+		//else if (nowTimeStr == '112921')	{ lastp21 = lastpnum; }
+		//else if (nowTimeStr == '112922')	{ lastp22 = lastpnum; }
+		//else if (nowTimeStr == '112923')	{ lastp23 = lastpnum; }
+		//else if (nowTimeStr == '112924')	{ lastp24 = lastpnum; }
+		else if (nowTimeStr == '112925')	{ lastp25 = lastpnum; }
+		//else if (nowTimeStr == '112926')	{ lastp26 = lastpnum; }
+		//else if (nowTimeStr == '112927')	{ lastp27 = lastpnum; }
+		//else if (nowTimeStr == '112928')	{ lastp28 = lastpnum; }
+		//else if (nowTimeStr == '112929')	{ lastp29 = lastpnum; }
+		else if (nowTimeStr == '112930')	{ lastp30 = lastpnum; }
+		//else if (nowTimeStr == '112931')	{ lastp31 = lastpnum; }
+		//else if (nowTimeStr == '112932')	{ lastp32 = lastpnum; }
+		//else if (nowTimeStr == '112933')	{ lastp33 = lastpnum; }
+		//else if (nowTimeStr == '112934')	{ lastp34 = lastpnum; }
+		else if (nowTimeStr == '112935')	{ lastp35 = lastpnum; }
+		//else if (nowTimeStr == '112936')	{ lastp36 = lastpnum; }
+		//else if (nowTimeStr == '112937')	{ lastp37 = lastpnum; }
+		//else if (nowTimeStr == '112938')	{ lastp38 = lastpnum; }
+		//else if (nowTimeStr == '112939')	{ lastp39 = lastpnum; }
+		else if (nowTimeStr == '112940')	{ lastp40 = lastpnum; }
+		else if (nowTimeStr == '112941')	{ lastp41 = lastpnum; }
+		else if (nowTimeStr == '112942')	{ lastp42 = lastpnum; }
+		else if (nowTimeStr == '112943')	{ lastp43 = lastpnum; }
+		else if (nowTimeStr == '112944')	{ lastp44 = lastpnum; }
+		else if (nowTimeStr == '112945')	{ lastp45 = lastpnum; }
+		else if (nowTimeStr == '112946')	{ lastp46 = lastpnum; }
+		else if (nowTimeStr == '112947')	{ lastp47 = lastpnum; }
+		else if (nowTimeStr == '112948')	{ lastp48 = lastpnum; }
+		else if (nowTimeStr == '112949')	{ lastp49 = lastpnum; }
+		else if (nowTimeStr == '112950')	{ lastp50 = lastpnum; }
+		else if (nowTimeStr == '112951')	{ lastp51 = lastpnum; }
+		else if (nowTimeStr == '112952')	{ lastp52 = lastpnum;  delta52_50 = lastp52 - lastp50; }
+		else if (nowTimeStr == '112953')	{ lastp53 = lastpnum;  delta53_50 = lastp53 - lastp50; }
+		else if (nowTimeStr == '112954')	{ lastp54 = lastpnum;  delta54_50 = lastp54 - lastp50; }
+		else if (nowTimeStr == '112955')	{ lastp55 = lastpnum;  delta55_50 = lastp55 - lastp50; }
+		else if (nowTimeStr == '112956')	{ lastp56 = lastpnum; }
+		else if (nowTimeStr == '112957')	{ lastp57 = lastpnum; }
+		else if (nowTimeStr == '112958')	{ lastp58 = lastpnum; }
+		else if (nowTimeStr == '112959')	{ lastp59 = lastpnum; }
+		else if (nowTimeStr == '113000')	{ lastp60 = lastpnum; }		
+	}
+	catch(e){
+		
+	}
+	
+
 	
 	var allBidFlag = subThreadTable.allbid   // 远程接收调用命令XX的变量， 
 	
@@ -5004,8 +5308,46 @@ mainForm.show()
 mainForm.show(0x6/*_SW_MINIMIZE*/)
 
 
+
+
+
+//var wb = win.form( newform  ); 
+//mainForm.sho
+//win.form(newform, _Sw
+newform.show()
+
+
+//jppForm[TID:11832]
+import winex
+winHandle = winex.find("<.+>", "最新价");
+//winHandleMain = winex.find("<.+>", "好运来拍牌");
+
+
+
+//winHandle = win.find("Notepad","o???à′????");
+
+..io.print("1111111111111111111",winHandle)
+win.setTopmost(winHandle, true);
+
+
+
+//mainForm.edit.oncommand = function(id,event){
+	//mainForm.msgbox( mainForm.edit.text );
+//	newform.edit.text = mainForm.edit.text;	
+//}
+
+
+//win.show(winHandleMain,0x6/*_SW_MINIMIZE*/)
+
+
+
+//win.setForeground(win.find("","好运来拍牌"))
+//mainForm.show(_SW_	
+
 ioConsoleWnd = win.find("ConsoleWindowClass","jpp.exe")
 win.show(ioConsoleWnd,0x6/*_SW_MINIMIZE*/)
+
+
 
 ioConsoleWnd1 = win.find("ConsoleWindowClass","aardio.exe")
 win.show(ioConsoleWnd1,0x6/*_SW_MINIMIZE*/)
