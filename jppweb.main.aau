@@ -213,13 +213,13 @@ zbtn={cls="button";text="Z";left=317;top=357;right=346;bottom=391;z=35}
 /*}}*/
 
 var tmpFmTop = 0;
-var newform = ..win.form( top=10;bottom=500;left=800;right=1000;text="最新价";max=false;min=false)
+var newform = ..win.form( top=100;bottom=600;left=1050;right=1250;text="最新价";max=false;min=false)
 newform.add(
 edtTime   	={cls="edit";text="当前时间";	left=0;top=1;  right=300;bottom=99;color=8;edge=1;font=LOGFONT( h=-28;weight=700 );multiline=1;z=100};
-edtFtPrice	={cls="edit";text="估价";		left=0;top=100;right=300;bottom=199;color=255;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
+edtFtPrice	={cls="edit";text="估价";		left=0;top=100;right=300;bottom=199;color=16711935;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
 edtNewPrice	={cls="edit";text="最新价";		left=0;top=200;right=300;bottom=299;color=255;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
-edtBidPrice	={cls="edit";text="出价";		left=0;top=300;right=300;bottom=399;color=8;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
-edtBidTime	={cls="edit";text="出价时间";	left=0;top=400;right=300;bottom=499;color=8;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
+edtBidPrice	={cls="edit";text="出价";		left=0;top=300;right=300;bottom=399;color=32768;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
+edtBidTime	={cls="edit";text="出价时间";	left=0;top=400;right=300;bottom=499;color=1024;edge=1;font=LOGFONT( h=-28;weight=700 );multiline=1;z=100};
 )
 
 var manualYzm = "0"
@@ -3616,7 +3616,7 @@ bidConfirmNice = function(){
 				
 				pressF3()			
 				xLog("###	!!!立即出价!!!  当前时间"+nowTimeStr+"  行情 到达(大于等于) 出价，行情："+hqLastPriceStr+";     出价："+curBidPriceStr)	
-				newForm.edtBidTime.text = nowTimeStr;
+				newform.edtBidTime.text = nowTimeStr;
 				break;
 			}	
 	
@@ -3633,7 +3633,7 @@ bidConfirmNice = function(){
 					
 					pressF3()  // clk cancel btn
 					xLog("###	!!!提前100出价!!!   当前时间"+nowTimeStr+"大于等于"+bid2Time+ "且行情比出价高100, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
-					newForm.edtBidTime.text = nowTimeStr;
+					newform.edtBidTime.text = nowTimeStr;
 					break;	
 				}
 			}
@@ -3643,7 +3643,7 @@ bidConfirmNice = function(){
 					
 					pressF3()  // clk cancel btn
 					xLog("###	!!!提前200出价!!!   当前时间"+nowTimeStr+"大于等于"+bid4Time+ "且行情比出价高200, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
-					newForm.edtBidTime.text = nowTimeStr;
+					newform.edtBidTime.text = nowTimeStr;
 					break;	
 				}
 			}
@@ -3663,10 +3663,12 @@ bidConfirmNice = function(){
 			
 			pressF3()
 			xLog("###	!!!强制出价!!!      当前时间"+nowTimeStr+"到达最后出价时间:"+timeLine+" 强制出价,，行情："+hqLastPriceNum+"，出价："+curBidPriceStr)
-			newForm.edtBidTime.text = nowTimeStr;
+			newform.edtBidTime.text = nowTimeStr;
 			break;	
 		}
-	}		
+	}
+	newform.edtBidTime.text = nowTimeStr+'-'+curBidPriceStr;
+	xLog("###	!!!最终出价!!!      当前时间："+nowTimeStr+"行情："+hqLastPriceNum+"，出价："+curBidPriceStr);		
 }
 
 
@@ -4852,7 +4854,7 @@ timer.setInterval(1000)
 timer.disable()
 
 var timerImgClientHeartBeat = win.timer( mainForm );
-timerImgClientHeartBeat.setInterval(500)
+timerImgClientHeartBeat.setInterval(100)
 timerImgClientHeartBeat.enable()
 
 subThreadTable.manualFlag = "0"   //  手动提交出价，手动输入完验证码后，按F2 , 设置 manualFlag  为  1， 不再接收远程调用命令
