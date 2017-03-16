@@ -88,7 +88,7 @@ edit14={cls="edit";text="edit14";left=536;top=300;right=628;bottom=325;edge=1;mu
 edit15={cls="edit";text="edit15";left=536;top=329;right=628;bottom=354;edge=1;multiline=1;z=80};
 edit16={cls="edit";text="10000";left=702;top=231;right=794;bottom=259;edge=1;multiline=1;z=82};
 edit17={cls="edit";text="edit17";left=290;top=484;right=382;bottom=509;edge=1;multiline=1;z=96};
-edit18={cls="edit";text="edit18";left=82;top=481;right=203;bottom=533;color=255;edge=1;font=LOGFONT( h=-35;weight=700 );multiline=1;z=100};
+edit18={cls="edit";text="edit181111111";left=82;top=481;right=222;bottom=535;ah=1;aw=1;color=255;edge=1;font=LOGFONT( h=-35;weight=700 );multiline=1;z=100};
 edit2={cls="edit";text="300";left=98;top=236;right=245;bottom=261;edge=1;multiline=1;z=20};
 edit3={cls="edit";left=98;top=124;right=245;bottom=149;edge=1;multiline=1;z=8};
 edit4={cls="edit";text="1000";left=98;top=271;right=195;bottom=296;edge=1;multiline=1;z=22};
@@ -97,7 +97,7 @@ edit6={cls="edit";text="112948";left=107;top=306;right=199;bottom=331;edge=1;mul
 edit7={cls="edit";text="112950";left=106;top=340;right=198;bottom=365;edge=1;multiline=1;z=39};
 edit8={cls="edit";text="edit8";left=114;top=415;right=206;bottom=440;edge=1;multiline=1;z=44};
 edit9={cls="edit";text="112954";left=149;top=452;right=241;bottom=477;edge=1;multiline=1;z=47};
-groupbox={cls="groupbox";text="鼠标移动到相应位置按F10保存坐标";left=13;top=7;right=834;bottom=541;edge=1;z=1};
+groupbox={cls="groupbox";text="鼠标移动到相应位置按F10保存坐标";left=13;top=8;right=834;bottom=542;edge=1;z=1};
 hbtn={cls="button";text="H";left=346;top=357;right=375;bottom=391;z=36};
 picturebox={cls="picturebox";left=771;top=14;right=788;bottom=31;hide=1;image=$"\jpp-code.jpg";z=12};
 picturebox2={cls="picturebox";left=98;top=153;right=238;bottom=189;z=16};
@@ -213,13 +213,14 @@ zbtn={cls="button";text="Z";left=317;top=357;right=346;bottom=391;z=35}
 /*}}*/
 
 var tmpFmTop = 0;
-var newform = ..win.form( top=10;bottom=500;left=800;right=1000;text="最新价";max=false;min=false)
+var newform = ..win.form( top=100;bottom=420;left=1050;right=1250;text="最新价";max=false;min=false)
 newform.add(
-edtTime   	={cls="edit";text="当前时间";	left=0;top=1;  right=300;bottom=99;color=8;edge=1;font=LOGFONT( h=-28;weight=700 );multiline=1;z=100};
-edtFtPrice	={cls="edit";text="估价";		left=0;top=100;right=300;bottom=199;color=255;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
-edtNewPrice	={cls="edit";text="最新价";		left=0;top=200;right=300;bottom=299;color=255;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
-edtBidPrice	={cls="edit";text="出价";		left=0;top=300;right=300;bottom=399;color=8;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
-edtBidTime	={cls="edit";text="出价时间";	left=0;top=400;right=300;bottom=499;color=8;edge=1;font=LOGFONT( h=-50;weight=700 );multiline=1;z=100};
+edtTime   	={cls="edit";text="当前时间";	left=0;top=1;  right=300;bottom=40;color=8;edge=1;font=LOGFONT( h=-28;weight=700 );multiline=1;z=100};
+edtFtPrice	={cls="edit";text="估价";		left=0;top=40;right=300;bottom=90;color=16711935;edge=1;font=LOGFONT( h=-32;weight=700 );multiline=1;z=100};
+edtNewPrice	={cls="edit";text="最新价";		left=0;top=90;right=300;bottom=140;color=255;edge=1;font=LOGFONT( h=-32;weight=700 );multiline=1;z=100};
+edtBidPrice	={cls="edit";text="出价";		left=0;top=140;right=300;bottom=200;color=32768;edge=1;font=LOGFONT( h=-40;weight=700 );multiline=1;z=100};
+edtBidTime	={cls="edit";text="出价时间";	left=0;top=200;right=300;bottom=240;color=1024;edge=1;font=LOGFONT( h=-28;weight=700 );multiline=1;z=100};
+edtIncAt29	={cls="richedit";text="29分涨幅";	left=0;top=240;right=200;bottom=320;color=255;edge=1;font=LOGFONT( h=-21;weight=700 );multiline=1;z=100};
 )
 
 var manualYzm = "0"
@@ -227,6 +228,7 @@ var manualBid = "0";
 var isYzmOk  = "0";
 
 var yzmType = "jpp"
+
 
 
 var lastp00 = 0;
@@ -296,6 +298,13 @@ var delta52_50 = 0;
 var delta53_50 = 0; 
 var delta54_50 = 0; 
 var delta55_50 = 0; 
+var deltaLastMin29 = 0;
+
+var bidPriceAt29 = 0;
+var bidPriceAt29_1 = 0;
+var bidPriceAt29_2 = 0;
+var bidPriceAt29_3 = 0;
+var bidPriceAt29_4 = 0;
 
 _Beep = ::Kernel32.api("Beep","int(int,int)"); 
 
@@ -2946,7 +2955,14 @@ pressF7 = function(varYzmType = "jpp"){
 		
 		
 		code4Result = subThreadTable.threadRecImgResult;
-		code4Result = string.trim(code4Result)
+		try{
+			code4Result = string.trim(code4Result)
+		}
+		catch(e){
+			code4Result = "1111"
+		}
+		
+		
 	}
 	else {
 		gcode = jppDecode6uuScreen(xImgTopBtn,yImgTopBtn , xImgBtomBtn-xImgTopBtn,yImgBtomBtn-yImgTopBtn)
@@ -3501,7 +3517,7 @@ bidConfirmNice = function(){
 	}
 	
 	xLog("循环与最新行情进行比较，然后提交出价")
-	nowTimeStr = ""	
+	var nowTimeStr = ""	
 	while(true){	
 	
 		if (subThreadTable.isRunningbidNice == "n")
@@ -3616,7 +3632,7 @@ bidConfirmNice = function(){
 				
 				pressF3()			
 				xLog("###	!!!立即出价!!!  当前时间"+nowTimeStr+"  行情 到达(大于等于) 出价，行情："+hqLastPriceStr+";     出价："+curBidPriceStr)	
-				newForm.edtBidTime.text = nowTimeStr;
+				newform.edtBidTime.text = nowTimeStr;
 				break;
 			}	
 	
@@ -3633,7 +3649,7 @@ bidConfirmNice = function(){
 					
 					pressF3()  // clk cancel btn
 					xLog("###	!!!提前100出价!!!   当前时间"+nowTimeStr+"大于等于"+bid2Time+ "且行情比出价高100, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
-					newForm.edtBidTime.text = nowTimeStr;
+					newform.edtBidTime.text = nowTimeStr;
 					break;	
 				}
 			}
@@ -3643,7 +3659,7 @@ bidConfirmNice = function(){
 					
 					pressF3()  // clk cancel btn
 					xLog("###	!!!提前200出价!!!   当前时间"+nowTimeStr+"大于等于"+bid4Time+ "且行情比出价高200, 行情:"+hqLastPriceStr+";     出价："+curBidPriceStr)
-					newForm.edtBidTime.text = nowTimeStr;
+					newform.edtBidTime.text = nowTimeStr;
 					break;	
 				}
 			}
@@ -3663,10 +3679,12 @@ bidConfirmNice = function(){
 			
 			pressF3()
 			xLog("###	!!!强制出价!!!      当前时间"+nowTimeStr+"到达最后出价时间:"+timeLine+" 强制出价,，行情："+hqLastPriceNum+"，出价："+curBidPriceStr)
-			newForm.edtBidTime.text = nowTimeStr;
+			newform.edtBidTime.text = nowTimeStr;
 			break;	
 		}
-	}		
+	}
+	newform.edtBidTime.text = nowTimeStr+'-'+curBidPriceStr;
+	xLog("###	!!!最终出价!!!      当前时间："+nowTimeStr+"行情："+hqLastPriceNum+"，出价："+curBidPriceStr);		
 }
 
 
@@ -3819,7 +3837,7 @@ bidNice2 = function(){
 	// 等待验证码， 如果 识别码 不对，应超时跳出，或重取验证码
 	xLog("循环等待获取识别码，2秒超时")
 	var sbmTimeOut = 0
-	while(true){
+	//while(true){
 		/*
 		var vtype = getImgSbm()
 		
@@ -3839,16 +3857,16 @@ bidNice2 = function(){
 		sbmTimeOut = sbmTimeOut + 100
 		win.delay(100)
 		
-		if (sbmTimeOut > 550){  // 2秒后超时
-			import mouse
-			mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
-			win.delay(50)
-			mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
+		//if (sbmTimeOut > 550){  // 2秒后超时
+		//	import mouse
+		//	mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+		//	win.delay(50)
+		//	mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
 		
-			xLog("###	！！！验证码识别码超时，["+getNowTime()+"] sbmTimeOut："+tostring(sbmTimeOut))
-			break;
-		}
-	}				
+		//	xLog("###	！！！验证码识别码超时，["+getNowTime()+"] sbmTimeOut："+tostring(sbmTimeOut))
+		//	break;
+		//}
+	//}				
 		
 	xLog("开始发起验证码识别")	
 	// 识别验证码并输入
@@ -3868,10 +3886,23 @@ bidNice2 = function(){
 		bidNice2()		
 	}
 	elseif(tmpCodeResult == "y"){
-		clkBidCancel300()
-		clkErrWndBtn300()
-		win.delay(500)
-		bidNice2()	
+		import mouse
+		mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+		
+		//clkBidCancel300()
+		//clkErrWndBtn300()
+		win.delay(100)
+		tmpCodeResult = pressF7(yzmType)
+		//bidNice2()	
+		
+		if(tmpCodeResult == "y"){
+			clkBidCancel300()
+			clkErrWndBtn300()
+			win.delay(500)
+			bidNice2()	
+		}	
+		else
+			bidConfirmNice()
 	}	
 	else
 		bidConfirmNice()
@@ -4041,6 +4072,148 @@ bidNice = function(){
 	
 	//clkErrWndBtn300()	
 }
+
+// 29 分直接出价，自动，提交验证码识别
+bidNiceAt29Auto = function(varBidPrice){
+
+	if (subThreadTable.isRunningbidNice == "n")
+	{
+		subThreadTable.isRunningbidNice = "y"
+	}else {  // if "y"		
+		//subThreadTable.isRunningbidNice = "s"
+		//while(subThreadTable.isRunningbidNice != "n") 	
+		//{
+		//	sleep(100)	
+		//}
+		
+		//clkBidCancel300()  // 点击取消出价，然后开始重新出价	
+		//sleep(200)
+		//clkBidCancel300()	
+		//subThreadTable.isRunningbidNice = "y"			
+	}
+	
+
+	xLog("!!!!	开始最终出价")
+	startTime1 = time.now()
+	startTime1.format="%H%M%S";
+	xLog("F1 Start...从配置中输入自定义加价，点击自定义加价，点击出价获取验证码", startTime1)
+	
+	// 提交出价
+	//检查验证码识别结果 不为 1111， y 时， 为首次提交出价, 否则直接点击出价
+	pressF1Tmp(varBidPrice) // 从配置中输入自定义加价，点击自定义加价，点击出价获取验证码, 
+	
+	xLog("	##	提交出价")
+		
+	// 等待验证码， 如果 识别码 不对，应超时跳出，或重取验证码
+	xLog("循环等待获取识别码，2秒超时")
+	var sbmTimeOut = 0
+	//while(true){
+		/*
+		var vtype = getImgSbm()
+		
+		xLog("3183-bidNice-vtype:"+vtype)
+		
+		if  (vtype != "") and (string.indexOf(qCode, vtype)!=null) {
+			break;
+		}
+		else if (vtype != "") and (string.indexOf(zCode, vtype)!=null){
+			break;
+		}
+		else if (vtype != "") and (string.indexOf(hCode, vtype)!=null){
+			break;
+		}
+		*/
+		win.delay(100)
+		
+		//import mouse
+		//mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+		//win.delay(50)
+		//mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
+		
+		sbmTimeOut = sbmTimeOut + 300
+		
+		
+	//	if (sbmTimeOut > 400){  // 2秒后超时
+	//		xLog("###	！！！验证码识别码超时，["+getNowTime()+"] sbmTimeOut："+tostring(sbmTimeOut))
+	//		break;
+	//	}
+	//}				
+		
+	xLog("开始发起验证码识别")	
+	// 识别验证码并输入
+	xLog("###	开始识别验证码，["+getNowTime()+"] 验证码识别类型-yzmType："+yzmType)
+	var tmpCodeResult = pressF7("allndmt")
+	xLog("###	完成识别验证码，["+getNowTime()+"] 验证码识别结果-gCode："+tmpCodeResult)
+	xLog("##	输入验证码完成")
+	//mainForm.msgbox(nowTimeStr+"-"+gDoneTimer)
+		
+	// 提交
+	xLog("获取出价价格，并准备与最新行情进行比较，然后提交出价"+curBidPriceStr)	
+	if (tmpCodeResult == "1111")
+	{	
+		clkBidCancel300()
+		clkErrWndBtn300()		
+		win.delay(500)
+		bidNice()		
+	}
+	elseif(tmpCodeResult == "y"){
+		xLog("点击刷新验证码，F7重新发起验证码识别"+curBidPriceStr)	
+		mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+		win.delay(50)
+		mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
+		win.delay(50)
+		
+		tmpCodeResult = pressF7("allndmt")
+		
+		if(tmpCodeResult == "y"){
+			clkBidCancel300()
+			clkErrWndBtn300()
+			win.delay(500)
+			bidNice()	
+		}	
+		else
+			bidConfirmNice()
+	}
+	else
+		bidConfirmNice()
+		
+
+		
+	subThreadTable.threadRecImgResult = "";
+
+	
+	if (subThreadTable.isRunningbidNice == "n"){
+		//subThreadTable.isRunningbidNice = "n"
+		clkBidCancel300()
+		xLog("取消出价执行，重新进行最后出价, subThreadTable.isRunningbidNice", subThreadTable.isRunningbidNice)
+		return ; 
+	}
+		
+	
+	
+	startTime2 = time.now()
+	startTime2.format="%H%M%S";	
+	..io.print("bid final all cost :", startTime2, tonumber(startTime2)-tonumber(startTime1))
+	
+	xLog("!!!!	结束最终出价,	全过程耗时：	"+(tonumber(startTime2)-tonumber(startTime1)))
+	xLogFlush()
+	
+	isBidPageNice() // 等待，直到返回到主页
+	
+	bidNice2()
+	
+	//thread.create(threadSendMsgToMgrSvr)
+	
+	clkErrWndBtn300()	
+	
+	//isBidPageNice() // 等待，直到返回到主页
+	
+	//bidNice2()
+	subThreadTable.isRunningbidNice = "n"
+	
+	//clkErrWndBtn300()	
+}
+
 
 //  直接出价 入口
 bidNiceTmp = function(varBidPrice){
@@ -4402,7 +4575,7 @@ hotkey.reg(
 hotkey.reg(
     "CTRL","6", 
     function(hwnd,...){
-		bidTestAll()
+		bidNiceAt29Auto(tostring(bidPriceAt29+tonumber(priceBefore)))
     } 
 )
 
@@ -4852,7 +5025,7 @@ timer.setInterval(1000)
 timer.disable()
 
 var timerImgClientHeartBeat = win.timer( mainForm );
-timerImgClientHeartBeat.setInterval(500)
+timerImgClientHeartBeat.setInterval(100)
 timerImgClientHeartBeat.enable()
 
 subThreadTable.manualFlag = "0"   //  手动提交出价，手动输入完验证码后，按F2 , 设置 manualFlag  为  1， 不再接收远程调用命令
@@ -4865,9 +5038,14 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 	//newform.edit.text = cliGetLastPrice();
 	var lastP =   cliGetLastPrice();
 	
+	if (lastP = null)
+	{
+		lastP=999900;
+	}
+	
 	newform.edtTime.text = getNowWithMsWithSep();
-	newform.edtNewPrice.text = lastP;
-	newform.edtFtPrice.text = getFtPrice();
+	newform.edtNewPrice.text = "最新:"+lastP;
+	//newform.edtFtPrice.text = "估价:"+getFtPrice();
 	
 	try{
 		var lastpnum = tonumber(lastP)
@@ -4875,7 +5053,48 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 		{
 			lastp50 = lastpnum;
 		}
-		else if (nowTimeStr == '112900') 	{ lastp00 = lastpnum; }
+		else if (nowTimeStr == '112900') 	
+		{ 	lastp00 = lastpnum; }
+		else if (nowTimeStr == '112859') 	
+		{ 	//lastp00 = lastpnum; 
+			var jsPriceNum = tonumber(lowestPriceJS)
+			var tmpIncAt29 = lastpnum- jsPriceNum
+					
+			
+			if (tmpIncAt29 <= 400){  // 1500，1600，1700-1800
+				bidPriceAt29 = jsPriceNum + 1500;
+				bidPriceAt29_1 = jsPriceNum + 1600;
+				bidPriceAt29_2 = jsPriceNum + 1700;
+				bidPriceAt29_3 = jsPriceNum + 1800;
+				bidPriceAt29_4 = jsPriceNum + 1900;
+			}
+			elseif(tmpIncAt29 >=500) and (tmpIncAt29 <= 700) { //  2100，2200，2300，2400-2500	
+				bidPriceAt29 = jsPriceNum + 2100;
+				bidPriceAt29_1 = jsPriceNum + 2200;
+				bidPriceAt29_2 = jsPriceNum + 2300;
+				bidPriceAt29_3 = jsPriceNum + 2400;
+				bidPriceAt29_4 = jsPriceNum + 2500;			
+			}
+			elseif(tmpIncAt29 >=800) and (tmpIncAt29 <= 1000) { // 2200，2300，2400-2500
+				bidPriceAt29 = jsPriceNum + 2200;
+				bidPriceAt29_1 = jsPriceNum + 2300;
+				bidPriceAt29_2 = jsPriceNum + 2400;
+				bidPriceAt29_3 = jsPriceNum + 2500;
+				bidPriceAt29_4 = jsPriceNum + 2600;			
+			}
+			else {  // 2500, 2600, 2700, 2800, 2900
+				bidPriceAt29 = jsPriceNum + 2500;
+				bidPriceAt29_1 = jsPriceNum + 2600;
+				bidPriceAt29_2 = jsPriceNum + 2700;
+				bidPriceAt29_3 = jsPriceNum + 2800;
+				bidPriceAt29_4 = jsPriceNum + 2900;				
+			}
+			
+			newform.edtIncAt29.text = "29分涨幅:"+tostring(tmpIncAt29)+"
+加价:"+tostring(bidPriceAt29-jsPriceNum)+"
+估价:"+tostring(bidPriceAt29)
+			newform.edtFtPrice.text = "估价:"+tostring(bidPriceAt29)
+		}
 		else if (nowTimeStr == '112901')	{ lastp01 = lastpnum; }
 		//else if (nowTimeStr == '112902')	{ lastp02 = lastpnum; }
 		//else if (nowTimeStr == '112903')	{ lastp03 = lastpnum; }
@@ -5017,6 +5236,7 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 			subThreadTable.allbid = "0"	
 			//bidFinalAll()
 			bidNice()
+			//bidNiceAt29Auto(tostring(bidPriceAt29+tonumber(priceBefore)))
 		}elseif (string.indexOf(allBidFlag,"oncelogin")!=null){
 			subThreadTable.allbid = "0"	
 			loginOnceAll()
@@ -5028,7 +5248,8 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 			bidTwiceAll()
 		}elseif (string.indexOf(allBidFlag,"alltestbid")!=null){
 			subThreadTable.allbid = "0"	
-			bidTestAll()
+			//bidTestAll()
+			bidNiceAt29Auto(tostring(bidPriceAt29+tonumber(priceBefore)))
 		}
 		else {
 			subThreadTable.allbid = "0"
