@@ -4215,7 +4215,7 @@ bidNiceAt29Auto = function(varBidPrice){
 }
 
 
-//  直接出价 入口
+//  直接出价 入口, 需要手工输入验证码，不走打码服务器
 bidNiceTmp = function(varBidPrice){
 
 	if (subThreadTable.isRunningbidNice == "n")
@@ -4302,6 +4302,133 @@ bidNiceTmp = function(varBidPrice){
 	else
 		bidConfirmNice()
 	*/	
+
+		
+	subThreadTable.threadRecImgResult = "";
+
+	
+	if (subThreadTable.isRunningbidNice == "n"){
+		//subThreadTable.isRunningbidNice = "n"
+		clkBidCancel300()
+		xLog("取消出价执行，重新进行最后出价, subThreadTable.isRunningbidNice", subThreadTable.isRunningbidNice)
+		return ; 
+	}
+		
+	
+	
+	startTime2 = time.now()
+	startTime2.format="%H%M%S";	
+	..io.print("bid final all cost :", startTime2, tonumber(startTime2)-tonumber(startTime1))
+	
+	xLog("!!!!	结束最终出价,	全过程耗时：	"+(tonumber(startTime2)-tonumber(startTime1)))
+	xLogFlush()
+	
+	isBidPageNice() // 等待，直到返回到主页
+	
+	bidNice2()
+	
+	//thread.create(threadSendMsgToMgrSvr)
+	
+	clkErrWndBtn300()	
+	
+	//isBidPageNice() // 等待，直到返回到主页
+	
+	//bidNice2()
+	subThreadTable.isRunningbidNice = "n"
+	
+	//clkErrWndBtn300()	
+}
+
+
+
+//  直接出价 入口, 走打码服务器
+bidNiceAuto = function(varBidPrice){
+
+	if (subThreadTable.isRunningbidNice == "n")
+	{
+		subThreadTable.isRunningbidNice = "y"
+	}else {  // if "y"		
+		//subThreadTable.isRunningbidNice = "s"
+		//while(subThreadTable.isRunningbidNice != "n") 	
+		//{
+		//	sleep(100)	
+		//}
+		
+		//clkBidCancel300()  // 点击取消出价，然后开始重新出价	
+		//sleep(200)
+		//clkBidCancel300()	
+		//subThreadTable.isRunningbidNice = "y"			
+	}
+
+
+	xLog("!!!!	开始最终出价")
+	startTime1 = time.now()
+	startTime1.format="%H%M%S";
+	xLog("F1 Start...从配置中输入自定义加价，点击自定义加价，点击出价获取验证码", startTime1)
+	
+	// 提交出价
+	//检查验证码识别结果 不为 1111， y 时， 为首次提交出价, 否则直接点击出价
+	pressF1Tmp(varBidPrice) // 从配置中输入自定义加价，点击自定义加价，点击出价获取验证码, 
+	
+	xLog("	##	提交出价")
+		
+	// 等待验证码， 如果 识别码 不对，应超时跳出，或重取验证码
+	//xLog("循环等待获取识别码，2秒超时")
+	//var sbmTimeOut = 0
+
+	win.delay(200)
+		
+	//import mouse
+	//mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+	//win.delay(50)
+	//mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
+		
+	//sbmTimeOut = sbmTimeOut + 300
+	
+	// 选定验证码输入框
+	//mouse.click(xImgEdt, yImgEdt, true);				
+		
+	xLog("开始发起验证码识别")	
+	// 识别验证码并输入
+	xLog("###	开始识别验证码，["+getNowTime()+"] 验证码识别类型-yzmType："+yzmType)
+	var tmpCodeResult = pressF7("allndmt")
+	xLog("###	完成识别验证码，["+getNowTime()+"] 验证码识别结果-gCode："+tmpCodeResult)
+	xLog("##	输入验证码完成")
+	//mainForm.msgbox(nowTimeStr+"-"+gDoneTimer)
+		
+	// 提交
+	//bidConfirmNice()
+	
+	xLog("获取出价价格，并准备与最新行情进行比较，然后提交出价"+curBidPriceStr)	
+	if (tmpCodeResult == "1111")
+	{	
+		clkBidCancel300()
+		clkErrWndBtn300()		
+		win.delay(500)
+		bidNice()		
+	}
+	elseif(tmpCodeResult == "y"){
+		xLog("点击刷新验证码，F7重新发起验证码识别"+curBidPriceStr)	
+		mouse.click( xImgTopBtn+20, yImgTopBtn+20,true); 
+		win.delay(50)
+		mouse.click(xImgBtomBtn-20, yImgBtomBtn-20, true);
+		win.delay(50)
+		
+		tmpCodeResult = pressF7("allndmt")
+		
+		if(tmpCodeResult == "y"){
+			clkBidCancel300()
+			win.delay(50)
+			clkErrWndBtn300()
+			win.delay(200)
+			bidNiceAuto(varBidPrice)	
+		}	
+		else
+			bidConfirmNice()
+	}
+	else
+		bidConfirmNice()
+		
 
 		
 	subThreadTable.threadRecImgResult = "";
@@ -5028,6 +5155,8 @@ var timerImgClientHeartBeat = win.timer( mainForm );
 timerImgClientHeartBeat.setInterval(100)
 timerImgClientHeartBeat.enable()
 
+
+bidNiceAt29AutoFlag = "0"
 subThreadTable.manualFlag = "0"   //  手动提交出价，手动输入完验证码后，按F2 , 设置 manualFlag  为  1， 不再接收远程调用命令
 timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 	var	nowTime = time.now()
@@ -5055,7 +5184,7 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 		}
 		else if (nowTimeStr == '112900') 	
 		{ 	lastp00 = lastpnum; }
-		else if (nowTimeStr == '112859') 	
+		else if (nowTimeStr == '112859') // 是否 112859 自动出价	
 		{ 	//lastp00 = lastpnum; 
 			var jsPriceNum = tonumber(lowestPriceJS)
 			var tmpIncAt29 = lastpnum- jsPriceNum
@@ -5094,6 +5223,11 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 加价:"+tostring(bidPriceAt29-jsPriceNum)+"
 估价:"+tostring(bidPriceAt29)
 			newform.edtFtPrice.text = "估价:"+tostring(bidPriceAt29)
+			
+			if (priceBefore <> "999") and (bidNiceAt29AutoFlag == "0"){
+				bidNiceAt29AutoFlag = "1";
+				bidNiceAt29Auto(tostring(bidPriceAt29+tonumber(priceBefore)))
+			}
 		}
 		else if (nowTimeStr == '112901')	{ lastp01 = lastpnum; }
 		//else if (nowTimeStr == '112902')	{ lastp02 = lastpnum; }
@@ -5177,7 +5311,12 @@ timerImgClientHeartBeat.onTimer = function(hwnd,msg,id,tick){
 		//设置手动标识，接受到管理端发送的自动出价命令后，不再进行任何处理
 		if (subThreadTable.manualFlag != "1")   //  //  手动提交出价，手动输入完验证码后，按F2 , 设置 manualFlag  为  1， 不再接收远程调用命令
 		{
-			bidNice()
+			//bidNice()
+			
+			// 根据配置加价，在警示价基础上，增加相应价格进行出价
+			var jsPriceNum = tonumber(lowestPriceJS)
+			var addPriceNum = tonumber(priceAdded)
+			bidNiceAuto(tostring(jsPriceNum+addPriceNum))
 		}
 		
 	} elseif(allBidFlag!=null) and (allBidFlag == "ccmdalllogin"){
